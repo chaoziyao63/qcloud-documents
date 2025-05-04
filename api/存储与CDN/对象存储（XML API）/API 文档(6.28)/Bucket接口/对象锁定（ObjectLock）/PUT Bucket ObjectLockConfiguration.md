@@ -46,7 +46,9 @@ Authorization: Auth String
 | DefaultRetention        | ObjectLockConfiguration.Rule                  | 对象锁定默认周期                      | Containers | 是       |
 | Days                    | ObjectLockConfiguration.Rule.DefaultRetention | 对象锁定默认周期时长（范围为1-36500） | Int        | 是       |
 
- 
+>!
+- ObjectLockEnabled 参数仅支持配置为 Enabled，配置为 Enabled 即为该存储桶开启了对象锁定功能。
+- 开启对象锁定功能后不支持关闭，请您谨慎操作。
 
 ## 响应
 
@@ -66,8 +68,41 @@ Authorization: Auth String
 | :----------- | :---------------- | :----------------------------------------------------------- |
 | 409 Conflict | InvalidLockedTime | 当 Days 天数小于原有时间，会返回报错：存储桶对象锁定时间不能小于原有时间，该值必须在 1 - 36500 天之间 |
 
+## 实际案例
+
+#### 请求
+
+以下示例表示对存储桶 examplebucket-1250000000 设置对象锁定，保留期限为1天。
+
+```plaintext
+PUT /?object-lock= HTTP/1.1
+Host: exmaplebucket-1250000000.cos.ap-beijing.myqcloud.com
+Content-Length: 281
+Content-Type: application/x-www-form-urlencoded
+Authorization: Auth String
 
 
+<ObjectLockConfiguration>
+    <ObjectLockEnabled>Enabled</ObjectLockEnabled>
+    <Rule>
+        <DefaultRetention>
+            <Days>1</Days>
+        </DefaultRetention>
+    </Rule>
+</ObjectLockConfiguration>
+```
+
+
+#### 响应
+
+```plaintext
+HTTP/1.1 200 OK
+Content-Length: 0
+Connection: keep-alive
+Date: Fri, 09 Dec 2022 08:17:20 GMT
+Server: tencent-cos
+x-cos-request-id: NjM5MmVmMTBfNmM0ZTQ0MGJfMjA4****
+```
 
 
 

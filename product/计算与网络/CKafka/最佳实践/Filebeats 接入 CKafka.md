@@ -13,14 +13,14 @@ Beats 有多种采集器，您可以根据自身的需求下载对应的采集�
 ### 步骤1：获取 CKafka 实例接入地址
 
 1. 登录 [CKafka 控制台](https://console.cloud.tencent.com/ckafka)。
-2. 在左侧导航栏选择【实例列表】，单击实例的“ID”，进入实例基本信息页面。
-3. 在实例的基本信息页面的【接入方式】模块，可获取实例的接入地址。
+2. 在左侧导航栏选择**实例列表**，单击实例的“ID”，进入实例基本信息页面。
+3. 在实例的基本信息页面的**接入方式**模块，可获取实例的接入地址。
    ![](https://main.qcloudimg.com/raw/a28b5599889166095c168510ce1f5e89.png)
 
 ### 步骤2：创建 Topic
 
-1. 在实例基本信息页面，选择顶部【Topic管理】页签。
-2. 在 Topic 管理页面，单击【新建】，创建一个名为 test 的 Topic。
+1. 在实例基本信息页面，选择顶部**Topic管理**页签。
+2. 在 Topic 管理页面，单击**新建**，创建一个名为 test 的 Topic。
 	 ![](https://main.qcloudimg.com/raw/adc18f407be9ff1a1e195891b82031c5.png)
 
 ### 步骤3：准备配置文件
@@ -28,7 +28,7 @@ Beats 有多种采集器，您可以根据自身的需求下载对应的采集�
 进入 Filebeat 的安装目录，创建配置监控文件 filebeat.yml。
 <dx-codeblock>
 :::  yaml
-#======= Filebeat prospectors ==========
+#======= Filebeat7.x之后的版本，将 filebeat.prospectors 修改为 filebeat.inputs 即可 =======
 filebeat.prospectors:
 
 - input_type: log 
@@ -121,5 +121,14 @@ output.kafka:
   version:0.10.2 // 根据不同 CKafka 实例开源版本配置
 :::
 </dx-codeblock>
+
+
+## 说明与注意
+- 发送数据到 CKafka，不能设置压缩 compression.codec。
+- 默认不支持 Gzip 压缩格式，如果需要支持，请 [提交工单](https://console.cloud.tencent.com/workorder/category) 申请。
+Gzip 压缩对于 CPU 的消耗较高，使用 Gzip 会导致所有的消息都是 InValid 消息。
+- 使用 LZ4 压缩方法时，程序不能正常运行，可能的原因如下：
+消息格式错误。CKafka 默认版本为0.10.2，您需要使用 V1 版本的消息格式。
+- 不同 Kafka Client 的 SDK 设置方式不同，您可以通过开源社区进行查询（例如 [C/C++ Client 的说明](https://github.com/edenhill/librdkafka/blob/master/INTRODUCTION.md#compression)），设置消息格式的版本。
 
 

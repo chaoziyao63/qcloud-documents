@@ -1,19 +1,20 @@
-本文为您描述如何接入E证通H5，接入相关指引连接如下：
+本文为您描述如何接入E证通 H5，接入相关指引连接如下：
 1. [开通E证通](https://cloud.tencent.com/document/product/1007/56642)
 2. [申请商户 ID](#spang)
 3. [获取 EidToken](#eidtoken)
 4. [跳转至 H5 进行核身](#eidh5)
 5. [获取E证通核验结果信息](#jieguo)
 6. [查看错误码](https://cloud.tencent.com/document/product/1007/47912)
-7. [对账指引](https://cloud.tencent.com/document/product/1007/51816)
 
 详细接入操作如下：
 
 [](id:spang)
 ## 1. 申请商户 ID
-1.1 登录腾讯云慧眼 [人脸核身控制台](https://console.cloud.tencent.com/faceid)，单击【自助接入】>【E证通服务】>【申请商户 ID】
+1.1 登录腾讯云慧眼 [人脸核身控制台](https://console.cloud.tencent.com/faceid)，单击**自助接入**>**E证通服务**>**申请商户 ID**
 ![](https://main.qcloudimg.com/raw/ee9d314f001f83023b36145271fce756.png)
-1.2 填写完相关申请信息，单击【提交】，审核时间需要3-5天，请您耐心等待。
+1.2 完全填写相关信息，然后单击提交。审核时间从您提交当天开始计算，需要3个工作日，请您预留好时间并耐心等待。
+>! 如果审核后需要您修改资料，审核预估时间会从下次提交时重新计算。
+>
 ![](https://main.qcloudimg.com/raw/14565c77b200b1be75664b33fc6a84b9.png)
 1.3 审核通过后，可以在自助接入列表页，查看商户 ID，后续需要使用商户 ID 获取E证通服务流程唯一标识 EidToken。 
 
@@ -43,10 +44,10 @@
 ## 接入时序图（轮询）
 >!轮询应从获取 EidTtoken 之后就开始，对 EidToken 状态相应处理，如果核身完成就可以拉取核身结果。
 
-![](https://main.qcloudimg.com/raw/4234f67c18e1292b89420a5bb26fc9bf.svg)
+![](https://qcloudimg.tencent-cloud.cn/raw/8ffcbb54f76b6c67bc7e91fc6d1d6424.png)
  
 
  
 ## 接入时序图（重定向）
 
-![](https://main.qcloudimg.com/raw/3d9ab9879ab9101c57d56e513ad9b196.svg)
+![](https://qcloudimg.tencent-cloud.cn/raw/6aecdcd01401636f9ebc7431de5048e3.png)

@@ -20,8 +20,8 @@ OAuth2.0 有以下四个角色：
 （B）：资源所有者同意授权。
 （C）：客户端获得了资源所有者的授权之后，向授权服务器申请授权令牌。
 （D）：授权服务器验证客户端无误后发放授权令牌。
-（E）：客户端拿到授权令牌之后请求资源服务器发送用户信息。
-（F）：资源服务器验证令牌无误后将用户信息发放给客户端。
+（E）：客户端拿到授权令牌之后请求资源服务器。
+（F）：资源服务器验证令牌无误后将资源信息发放给客户端。
 
 ## 前提条件
  - 准备分发 token 的授权服务器（您需要自建授权服务器，API 网关提供了 [Python3 Demo](https://github.com/TencentCloud/apigateway-demo/tree/master/apigateway-oauth-python-demo) 和 [Golang Demo](https://github.com/TencentCloud/apigateway-demo/tree/master/apigateway-oauth-golang-demo/AS) 供您参考）。
@@ -35,7 +35,7 @@ OAuth2.0 有以下四个角色：
 2. 生成 RSA 公钥和私钥。使用 Python3 运行 produce_key.py，生成三个文件：
  - public_pem ：pem 格式的公钥
  - priv_pem ：pem 格式的私钥
- - pulic ：json 格式的公钥，该文件的内容用于配置 API 网关的授权 API。具体格式如下：：
+ - public ：json 格式的公钥，该文件的内容用于配置 API 网关的授权 API。具体格式如下：：
 ```
 {"e":"AQAB","kty":"RSA","n":"43nSuC6lmGLogEPgFVwaaxAmPDzmZcocRB4Jed_dHc-sV7rcAcNB0iHyuGfNkfOAE2uhHVjdXuO6DBYGz4pnTwRZ5_wFrW0DlrlJQAXSvg6B2N1uda_aqySNw3rrvdh38rVG7HxFmyPbLXcpJtyfkiRNyZ1WhSpH0NciIRrFbW2mKRtOZsBGfBgmNqPGcGrMA71cuqNAQ9RMKmAF37iGXkx0tWMBQ_PL2aviHhtsiPbT3zIO7qUG3cleBHnS61kid3K8F38z9-5Hj-1zdTIP8iS4rAt4FmhvKvtOocRPYGq0W_dLLxmi4DYgIV2GJE93WyZ1EUvgRGhpcHvyT65z4w"}
 ```
@@ -49,7 +49,7 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTIyNzgwODksImZvbyI6ImJhciIsIml
 
 1. 在已创建的服务中，创建授权 API（参考 [创建通用 API](https://cloud.tencent.com/document/product/628/11797)），前端配置时，鉴权类型选择 OAuth2.0，OAuth 模式选择授权 API。
 ![](https://main.qcloudimg.com/raw/15e1037c697b18395be29a7520d7f403.png)
-2. 后端配置时，认证服务器选择自己的个人服务器地址，token 位置选择 Header，公钥为执行文件 produce_key.py 生成的 public 文件中的内容，创建完成后单击【完成】。
+2. 后端配置时，认证服务器选择自己的个人服务器地址，token 位置选择 Header，公钥为执行文件 produce_key.py 生成的 public 文件中的内容，创建完成后单击**完成**。
 ![](https://main.qcloudimg.com/raw/2cd37daa0975fd88cbddf0eddc722a38.png)
 
 ### 步骤3：配置腾讯云 API 网关的业务 API 

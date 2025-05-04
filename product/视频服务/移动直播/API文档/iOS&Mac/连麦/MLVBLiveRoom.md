@@ -1,6 +1,6 @@
 __功能__
 
-腾讯云移动直播 - 连麦直播间。
+腾讯云视立方·移动直播 - 连麦直播间。
 
 >! 后台接口限制并发为每秒100次请求，若您有高并发请求请提前 [联系我们](https://cloud.tencent.com/act/event/connect-service) 处理，避免影响服务调用。
 
@@ -20,7 +20,7 @@ __介绍__
 - IM SDK：使用 IM SDK 的 AVChatroom 用于实现直播聊天室的功能，同时，主播间的连麦流程也是依靠 IM 消息串联起来的。
 
 
-请参见 [直播连麦（LiveRoom）](https://cloud.tencent.com/document/product/454/14606)。
+请参见 [直播连麦（LiveRoom）](https://cloud.tencent.com/document/product/454/52751)。
 
 
 

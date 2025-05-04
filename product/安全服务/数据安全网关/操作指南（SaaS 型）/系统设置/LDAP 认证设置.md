@@ -2,17 +2,21 @@
 当企业内部使用 LDAP 时，用户可以使用 LDAP 账号登录堡垒机，管理人员也可以直接从 LDAP 同步用户到堡垒机，这样就不需要单独维护堡垒机的用户管理体系，简化管理流程。
 >?如果您有 LDAP 认证的需求，请 [联系我们](https://cloud.tencent.com/online-service?from=connect-us) 开通该功能。
 
+
+
+
 ## 操作步骤
-1. 登录 [堡垒机控制台](https://console.cloud.tencent.com/dsgc/bh)，单击【进入】，进入 SaaS 型堡垒机控制台。
-![](https://main.qcloudimg.com/raw/eb08794b3b6dbfb57f1629b8b35c9a88.png)
-2. 在左侧导航选择【系统设置】>【认证设置】，进入认证设置页面。
+1. 登录 [堡垒机控制台](https://console.cloud.tencent.com/dsgc/bh)，单击**立即进入**，进入SaaS 型堡垒机控制台。
+![](https://qcloudimg.tencent-cloud.cn/raw/b2f6673b0cad7c2f423a6b6e287179af.png)
+2. 在左侧导航选择**系统设置** > **认证设置**，进入认证设置页面。
 ![](https://main.qcloudimg.com/raw/8a3ecc4e4d96eebaffa38dd1134153a3.png)
-3. 默认会进入到本地认证页面，单击【LDAP】，切换到 LDAP 设置页面。
+3. 默认会进入到本地认证页面，单击**LDAP**，切换到 LDAP 设置页面。
 ![](https://main.qcloudimg.com/raw/a89a544c54b51550aa7374e70a9d6ac9.png)
-4. 默认情况下，LDAP 状态为禁用状态，可单击![](https://main.qcloudimg.com/raw/f6fde0ec127d1f49dce725a2b8270fa0.png)按钮启用 LDAP，需配置如下 LDAP 信息。
+4. 默认情况下，LDAP 状态为禁用状态，可单击![](https://main.qcloudimg.com/raw/f6fde0ec127d1f49dce725a2b8270fa0.png)图标启用 LDAP，需配置如下 LDAP 信息。
 >!页面标*的为必填项。
 >
 ![](https://main.qcloudimg.com/raw/cb94097fc2a91a6659340ef0a20b56bc.png)
+
 **参数列表：**
 
 | 参数名称           | 参数说明                                                     |
@@ -35,6 +39,6 @@
 | 手机号属性映射     | 输入在 LDAP 里面表示用户手机号的属性。                             |
 | 邮箱属性映射       |输入在 LDAP 里面表示用户邮箱的属性。                         |
 
-5. 输入所需信息后，单击【确定】，即可保存设置。
-6. 如果开启了自动同步，单击【确定】之后，会弹出弹窗询问是否立即同步，根据实际需要选择“是”或“否”即可。
+5. 输入所需信息后，单击**确定**，即可保存设置。
+6. 如果开启了自动同步，单击**确定**之后，会弹出弹窗询问是否立即同步，根据实际需要选择“是”或“否”即可。
 ![](https://main.qcloudimg.com/raw/1d32214d1cce386f10346f4ee1de8d39.png)

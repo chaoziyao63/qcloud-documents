@@ -14,9 +14,9 @@
 1. 在 Windows 桌面右下角，右键单击网络连接图标，然后单击**打开“网络和 Internet”设置**。
 2. 在设置页面，单击**更改适配器选项**。
 3. 右键单击所有连接的网络，然后单击**属性**。
-4. 双击**Internet 协议版本4（TCP/IPv4）**选项。
+4. 双击 **Internet 协议版本4（TCP/IPv4）**选项。
 ![](https://main.qcloudimg.com/raw/6f05aca988fb44f24d9e9d1e2cb8ce6a.png)
-5. 在“Internet 协议版本4（TCP/IPv4）属性”弹窗中，选择“自动获得 IP 地址”和“自动获得 DNS 服务器地址”。
+5. 在 “Internet 协议版本4（TCP/IPv4）属性”弹窗中，选择“自动获得 IP 地址”和“自动获得 DNS 服务器地址”。
 6. 设置完成后，单击**确定**。
 
 
@@ -32,7 +32,7 @@
 
 ## 步骤3：配置 Edge 设备
 1. 启动 Edge 设备。
-2. 在本地 PC 端浏览器访问本地 Web 控制台，即`192.168.3.1`或使用域名方式访问`edge.cloud.tencent.com`，初次访问本地 Web 控制台时，需要设置登录密码。
+2. 在本地 PC 端浏览器访问本地 Web 控制台，即`192.168.2.1`或使用域名方式访问`edge.cloud.tencent.com`，初次访问本地 Web 控制台时，需要设置登录密码。
 >?请妥善保管您的登录密码，则需登录 [SD-WAN 接入服务控制台](https://console.cloud.tencent.com/sas/edge) 重新配置。具体操作请参见 [配置 WLAN](https://cloud.tencent.com/document/product/1277/47272)。
 >
 ![](https://main.qcloudimg.com/raw/9c9bd9852c51a58a0b7d2e157d142f3c.png)
@@ -84,7 +84,7 @@
 <td>绑定对应腾讯云专线，绑定专线时需配置 “VLAN ID”、“对端 IP”和“本端 IP”。</td>
 </tr>
 </tbody></table>   
-   3. 单击【WAN2 接口】页签， 并配置 WAN2 接口接入互联方式和接入互联类型，单击**下一步**。
+   3. 单击 **WAN2 接口**页签， 并配置 WAN2 接口接入互联方式和接入互联类型，单击**下一步**。
 >? 
 >- 若 WAN1 接口的互联方式为 “Internet”，则 WAN2 接口的互联方式默认为 “专线”。
 >- 若 WAN1 接口的互联方式为 “专线”，则 WAN2 接口的互联方式默认为 “Internet”。

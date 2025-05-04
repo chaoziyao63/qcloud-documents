@@ -1,12 +1,4 @@
-## 版本支持
-本页文档所描述功能，在腾讯云视立方中支持情况如下：
 
-| 版本名称 | 基础直播 Smart | 互动直播 Live | 短视频 UGSV | 音视频通话 TRTC | 播放器 Player | 全功能 |
-| -------- | -------- | -------- | -------- | -------- | -------- | -------- |
-| 支持情况 | &#10003;  | &#10003;                                                            | -  | -  | -  | &#10003;  |
-| SDK 下载 <div style="width: 90px"/> | [下载](https://vcube.cloud.tencent.com/home.html?sdk=basicLive) | [下载](https://vcube.cloud.tencent.com/home.html?sdk=interactivelive) | [下载](https://vcube.cloud.tencent.com/home.html?sdk=shortVideo) | [下载](https://vcube.cloud.tencent.com/home.html?sdk=video) | [下载](https://vcube.cloud.tencent.com/home.html?sdk=player) | [下载](https://vcube.cloud.tencent.com/home.html?sdk=allPart) |
-
-不同版本 SDK 包含的更多能力，具体请参见 [SDK 下载](https://cloud.tencent.com/document/product/1449/56978)。
 
 ## 功能概述
 
@@ -14,7 +6,7 @@
 ![#800px](https://main.qcloudimg.com/raw/52ee09ae4039d24f39e3cf8110e632c7.jpg)
 
 ## 特别说明
-**真机调试：**  由于 SDK 大量使用 Android 系统的音视频接口，这些接口在仿真模拟器下往往不能工作，推荐您尽量使用真机调试。
+**真机调试：** 由于 SDK 大量使用 Android 系统的音视频接口，这些接口在仿真模拟器下往往不能工作，推荐您尽量使用真机调试。
 
 ## 示例代码
 | 所属平台 |                         GitHub 地址                          |           关键类            |
@@ -22,8 +14,8 @@
 |   iOS    | [Github](https://github.com/tencentyun/LiteAVProfessional_iOS/blob/master/Demo/TXLiteAVDemo/LivePusherDemo/CameraPushDemo/CameraPushViewController.m) | CameraPushViewController.m  |
 | Android  | [Github](https://github.com/tencentyun/LiteAVProfessional_Android/blob/master/Demo/livepusherdemo/src/main/java/com/tencent/liteav/demo/livepusher/camerapush/ui/CameraPushMainActivity.java) | CameraPushMainActivity.java |
 >?除上述示例外，针对开发者的接入反馈的高频问题，腾讯云提供有更加简洁的 API-Example 工程，方便开发者可以快速的了解相关 API 的使用，欢迎使用。
->- iOS：[MLVB-API-Example](https://github.com/tencentyun/MLVBSDK/tree/master/iOS/MLVB-API-Example)
->- Android：[MLVB-API-Example](https://github.com/tencentyun/MLVBSDK/tree/master/Android/MLVB-API-Example)
+>- iOS：[MLVB-API-Example](https://github.com/LiteAVSDK/Live_iOS/blob/main/MLVB-API-Example-OC)
+>- Android：[MLVB-API-Example](https://github.com/LiteAVSDK/Live_Android/tree/main/MLVB-API-Example)
 
 ## 功能对接
 
@@ -78,44 +70,42 @@ mLivePusher.startCamera(true);
 ```
 
 [](id:step5)
-### 5. 启动和结束推流  
-
-如果已经启动了摄像头预览，就可以调用 V2TXLivePusher 中的 [startPush](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__V2TXLivePusher__android.html#ab4f8adaa0616d54d6ed920e49377a08a) 接口开始推流。  
-<dx-codeblock>
-::: java java
-//启动推流
-String rtmpURL = "rtmp://test.com/live/xxxxxx"; //此处填写您的 rtmp 推流地址  
+### 5. 启动和结束推流
+如果已经通过`startCamera`接口启动了摄像头预览，就可以调用 V2TXLivePusher 中的 [startPush](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__V2TXLivePusher__android.html#ab4f8adaa0616d54d6ed920e49377a08a) 接口开始推流。推流地址可以使用 [TRTC 地址](https://cloud.tencent.com/document/product/454/7915#.E8.87.AA.E4.B8.BB.E6.8B.BC.E8.A3.85-rtc-.E8.BF.9E.E9.BA.A6.2Fpk-url) ，或者使用 [RTMP 地址](https://cloud.tencent.com/document/product/454/7915#.E8.87.AA.E4.B8.BB.E6.8B.BC.E8.A3.85.E6.8E.A8.E6.B5.81-url) ，前者使用 UDP 协议，推流质量更高，并支持连麦互动。
+```objectivec 
+//启动推流， URL 可以使用 trtc:// 或者 rtmp:// 两种协议，前者支持连麦功能
+String rtmpURL = "trtc://cloud.tencent.com/push/streamid?sdkappid=1400188888&userId=A&usersig=xxxxx";  //支持连麦
+String rtmpURL = "rtmp://test.com/live/streamid?txSecret=xxxxx&txTime=xxxxxxxx";    //不支持连麦，直接推流到直播 CDN
 int ret = mLivePusher.startPush(rtmpURL.trim());  
 if (ret == V2TXLIVE_ERROR_INVALID_LICENSE) {    
     Log.i(TAG, "startRTMPPush: license 校验失败");  
 }       
-:::
-</dx-codeblock>
+```
 
 推流结束后，可以调用 V2TXLivePusher 中的 [stopPush](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__V2TXLivePusher__android.html#af07c1dcff91b43a2309665b8663ed530) 接口结束推流。
-```java 
+```objectivec
 //结束推流
 mLivePusher.stopPush();
 ```
->!如果已经启动了摄像头预览，请在结束推流时将其关闭。  
+>! 如果已经启动了摄像头预览，请在结束推流时将其关闭。 
 
-- **获取可用的推流 URL** 
-开通直播服务后，可以使用 [【直播控制台】>【直播工具箱】>【地址生成器】](https://console.cloud.tencent.com/live/addrgenerator/addrgenerator) 生成推流地址，详细信息请参见 [推拉流 URL](https://cloud.tencent.com/document/product/454/7915)。 
+- **如何获取可用的推流 URL** 
+开通直播服务后，可以使用 [**直播控制台** > **直播工具箱** > **地址生成器**](https://console.cloud.tencent.com/live/addrgenerator/addrgenerator) 生成推流地址，详细信息请参见 [推拉流 URL](https://cloud.tencent.com/document/product/454/7915)。 
 ![](https://main.qcloudimg.com/raw/7110d39cdb464b789bd68301f4de7ebe.png)   
-- **返回 V2TXLIVE_ERROR_INVALID_LICENSE 的原因**    
+- **返回 V2TXLIVE_ERROR_INVALID_LICENSE 的原因？**   
 如果 `startPush` 接口返回 `V2TXLIVE_ERROR_INVALID_LICENSE`，则代表您的 License 校验失败了，请检查 [第2步：给 SDK 配置 License 授权](#step2) 中的工作是否有问题。   
 
 [](id:step6)
 ### 6. 纯音频推流    
 如果您的直播场景是纯音频直播，不需要视频画面，那么您可以不执行 [第4步](#step4) 中的操作，或者在调用 `startPush` 之前调用 `stopCamera` 接口即可。
-
 ```java     
 V2TXLivePusher mLivePusher = new V2TXLivePusherImpl(this, V2TXLiveDef.V2TXLiveMode.TXLiveMode_RTMP); //指定对应的直播协议为 RTMP
 mLivePusher.startMicrophone();
-String rtmpURL = "rtmp://test.com/live/xxxxxx"; //此处填写您的 rtmp 推流地址  
+//启动推流， URL 可以使用 trtc:// 或者 rtmp:// 两种协议，前者支持连麦功能
+String rtmpURL = "trtc://cloud.tencent.com/push/streamid?sdkappid=1400188888&userId=A&usersig=xxxxx";  //支持连麦
+String rtmpURL = "rtmp://test.com/live/streamid?txSecret=xxxxx&txTime=xxxxxxxx";    //不支持连麦，直接推流到直播 CDN
 int ret = mLivePusher.startPush(rtmpURL.trim());  
 ```
-
 >? 如果您启动纯音频推流，但是 RTMP、FLV 、HLS 格式的播放地址拉不到流，那是因为线路配置问题，请 [提工单](https://console.cloud.tencent.com/workorder/category) 联系我们帮忙修改配置。  
 
 [](id:step7)
@@ -197,6 +187,7 @@ V2TXLivePusher 默认推出的是竖屏分辨率的视频画面，如果希望�
 mLivePusher.setVideoQuality(mVideoResolution, isLandscape ? V2TXLiveVideoResolutionModeLandscape : V2TXLiveVideoResolutionModePortrait);   
 ```
 
+[](id:step13)
 ### 13. 音效设置
 
 调用 V2TXLivePusher 中的 `getAudioEffectManager` 获取 TXAudioEffectManager 实例可以实现背景混音、耳返、混响等音效功能。背景混音是指主播在直播时可以选取一首歌曲伴唱，歌曲会在主播的手机端播放出来，同时也会被混合到音视频流中被观众端听到，所以被称为“混音”。
@@ -208,6 +199,7 @@ mLivePusher.setVideoQuality(mVideoResolution, isLandscape ? V2TXLiveVideoResolut
 ![](https://main.qcloudimg.com/raw/a90a110e2950568b9d7cd6bef8e0893b.png)
 >? 详细用法请参见 [TXAudioEffectManager API](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TXDeviceManager__android.html)。
 
+[](id:step14)
 ### 14. 设置 Logo 水印  
 
 设置 V2TXLivePusher 中的 [setWatermark](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__V2TXLivePusher__android.html#a4f56a5a937d87e5b1ae6f77c5bab2335) 可以让 SDK 在推出的视频流中增加一个水印，水印位置位是由传入参数 `(x, y, scale)` 所决定。
@@ -220,6 +212,7 @@ mLivePusher.setVideoQuality(mVideoResolution, isLandscape ? V2TXLiveVideoResolut
 mLivePusher.setWatermark(BitmapFactory.decodeResource(getResources(),R.drawable.watermark), 0.03f, 0.015f, 1f);
 ```
 
+[](id:step15)
 ### 15. 主播端弱网提醒 
 如果主播在推流时遇到网络很差的情况，需要有一个友好的提示，提示主播应当检查网络。    
 通过 V2TXLivePusherObserver 里的 [onWarning](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__V2TXLivePusherObserver__android.html#abd54414cbd5d52c096f9cc090cfe1fec) 可以捕获 **V2TXLIVE_WARNING_NETWORK_BUSY** 事件，它代表当前主播的网络已经非常糟糕，出现此事件即代表观众端会出现卡顿。此时可以在 UI 上弹出一个“弱网提示”来强提醒主播检查网络。
@@ -233,6 +226,30 @@ public void onWarning(int code, String msg, Bundle extraInfo) {
 } 
 :::
 </dx-codeblock>
+
+[](id:step16)
+### 16. 发送 SEI 消息 
+调用 V2TXLivePusher 中的 [sendSeiMessage](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__V2TXLivePusher__android.html#a5ba3762815f11bf5005f151e06ae0b38) 接口可以发送 SEI 消息。所谓 SEI，是视频编码数据中规定的一种附加增强信息，平时一般不被使用，但我们可以在其中加入一些自定义消息，这些消息会被直播 CDN 转发到观众端。使用场景有：
+- 答题直播：推流端将题目下发到观众端，可以做到“音-画-题”完美同步。
+- 秀场直播：推流端将歌词下发到观众端，可以在播放端实时绘制出歌词特效，因而不受视频编码的降质影响。
+- 在线教育：推流端将激光笔和涂鸦操作下发到观众端，可以在播放端实时地划圈划线。
+
+由于自定义消息是直接被塞入视频数据中的，所以不能太大（几个字节比较合适），一般常用于塞入自定义的时间戳等信息。
+```java
+//Android 示例代码
+int payloadType = 5;
+String msg = "test";
+mTXLivePusher.sendSeiMessage(payloadType, msg.getBytes("UTF-8"));
+```
+常规开源播放器或者网页播放器是不能解析 SEI 消息的，必须使用 LiteAVSDK 中自带的 V2TXLivePlayer 才能解析这些消息：
+1. 设置：
+```java
+int payloadType = 5;
+mTXLivePlayer.enableReceiveSeiMessage(true, payloadType)
+```
+2. 当 V2TXLivePlayer 所播放的视频流中有 SEI 消息时，会通过 V2TXLivePlayerObserver 中的 onReceiveSeiMessage 回调来接收该消息。
+
+
 
 ## 事件处理
 

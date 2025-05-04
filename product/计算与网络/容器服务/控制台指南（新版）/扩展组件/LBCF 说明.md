@@ -1,4 +1,4 @@
-## 简介
+## 简介 
 
 ### 组件介绍
 
@@ -23,7 +23,7 @@ Load Balancer Controlling Framework（LBCF）是一款部署在 Kubernetes 内�
 | lbcf-mutate                                    | MutatingWebhookConfiguration   | -      | -            |
 | lbcf-validate                                  | ValidatingWebhookConfiguration | -      | -            |
 
-## 使用场景
+## 使用场景 
 
 LBCF 对 Kubernetes 内部晦涩的运行机制进行了封装并以 Webhook 的形式对外暴露，在容器的全生命周期中提供了多达8种 Webhook。通过这些 Webhook，开发人员可以轻松实现下述功能：
 

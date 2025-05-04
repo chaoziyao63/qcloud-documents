@@ -1,3 +1,4 @@
+
 ##  准备工作
 - 接入安全 SDK，开发者需要完成以下步骤：
  1. 根据游戏运行平台和支持的 CPU 架构将 SDK 动态库拷贝到指定工程目录。
@@ -8,7 +9,7 @@
 ```
 tp2.jar
 tp2_sdk.h
-tss_sdt.h,tss_sdt_ex.h（安全数据类型选接，接入教程见《SDK 安全数据类型接入教程 C++）
+tss_sdt.h,tss_sdt_ex.h（安全数据类型选接，接入教程见《SDK 安全数据类型接入教程 C++》）
 libtersafe2.so
 ```
 
@@ -60,12 +61,12 @@ LOCAL_SHARED_LIBRARIES:=libtp2
 ```
 
 ## SDK 接口调用
-所需头文件
 ```
-#include “tp2_sdk.h”
+#include “tp2_sdk.h”；//所需头文件
+int tp2_sdk_init_ex(int game_id  const char* app_key);// 初始化接口 函数原型
 ```
 
-### 初始化接口
+### 参数说明
 
 | 参数 | 是否必须 | 说明 |
 |---------|---------|---------|
@@ -88,7 +89,7 @@ int tp2_setuserinfo(int account_type, int world_id, string open_id, string role_
 | account_type | 与运营平台相关的帐号类型，参考下文的 TssSdkEntryId 填写 |
 | world_id | 用户游戏角色的大区信息 |
 | open_id | 用户唯一身份标识，可自定义字符串。（和处罚相关必须填写） |
-| open_id | 区分用户创建的不同角色的标识 |
+| role_id | 区分用户创建的不同角色的标识 |
 
 account_type 默认 QQ 平台填 1，微信平台填 2，其他平台填 99。国内外主流帐号登录平台可参考以下数值填写。
 ```
@@ -179,4 +180,4 @@ tp2_setgamestatus(TP2_GAME_STATUS_BACKEND);
  ![](https://mc.qcloudimg.com/static/img/75eef4a35cf89e8e1d02be304403377b/image.png)
 6. 打开 tlog.log 可查看安全 SDK 发送的数据，如图
  ![](https://mc.qcloudimg.com/static/img/50526870e79bb4d21d5b5bb0c333f86f/image.png)
-安全 SDK 除了在初始化时会上报一些进程基本信息，还会根据定期的安全扫描结果来发送数据，例如扫描到 App 证书签名不正确，内存被修改，外挂进程正在运行等信息。tlog.log 记录 SDK 发送的数据（只在测试时生成），一般 1 小时的数据是 20K 左右，可以查看``tlog.log``的大小来统计安全 SDK 发送的数据量。
+安全 SDK 除了在初始化时会上报一些进程基本信息，还会根据定期的安全扫描结果来发送数据，例如扫描到 App 证书签名不正确，内存被修改，外挂进程正在运行等信息。tlog.log 记录 SDK 发送的数据（只在测试时生成），一般 1 小时的数据是 20K 左右，可以查看 `tlog.log` 的大小来统计安全 SDK 发送的数据量。

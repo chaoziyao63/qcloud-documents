@@ -1,4 +1,4 @@
-## 简介
+## 简介 
 ### 组件介绍
 Kubernetes-csi-tencentcloud COS 插件实现 CSI 的接口，可帮助您在容器集群中使用腾讯云对象存储 COS。
 
@@ -8,13 +8,11 @@ Kubernetes-csi-tencentcloud COS 插件实现 CSI 的接口，可帮助您在容�
 
 | Kubernetes 对象名称             | 类型                       | 默认占用资源 | 所属 Namespaces |
 | -------------------------- | ------------------------ | ------ | ------------ |
-| csi-cosplugin-external-runner  | StatefulSet | -     | -           |kube-system |
 | csi-coslauncher        | DaemonSet       | -    | kube-system             |
 | csi-cosplugin        | DaemonSet              | -     | kube-system            |
-| csi-cosplugin-external-runner	          | Service           | -      | kube-system       |
 | csi-cos-tencentcloud-token | Secret              | -  | kube-system      |
 
-## 使用场景
+## 使用场景 
 
 对象存储（Cloud Object Storage，COS）是腾讯云提供的一种存储海量文件的分布式存储服务，用户可通过网络随时存储和查看数据。腾讯云 COS 使所有用户都能使用具备高扩展性、低成本、可靠和安全的数据存储服务。
 

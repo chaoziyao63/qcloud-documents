@@ -1,3 +1,4 @@
+
 ## 概述 
 云数据库 CTSDB 是一款分布式、可扩展、支持近实时数据搜索与分析的时序数据库，且兼容 ELK 生态组件，您可以非常方便的使用 ELK 组件与 CTSDB 对接。
 ELK 组件提供了丰富的数据处理功能，包括数据采集、数据清洗、可视化图形展示等。常用的 ELK 生态组件包括 Filebeat、Logstash、Kibana。同时，CTSDB 也支持 Grafana 作为可视化平台。常见架构图如下： 
@@ -268,7 +269,7 @@ Kibana 是一个旨在为 Elasticsearch 设计的开源的分析和可视化平�
 
 #### Kibana 使用流程 
 1. **安装**
-下载与 Elasticseach 对应的 Kibanna 版本，并解压到某一目录。
+下载与 Elasticseach 对应的 Kibana 版本，并解压到某一目录。
 2. **配置**
 Kibana 的配置很简单，下节会给出样例。具体配置项含义参考 [该地址](https://www.elastic.co/guide/en/kibana/current/settings.html)。
 3. **运行**

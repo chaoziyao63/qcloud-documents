@@ -15,7 +15,7 @@ npm install -g @cloudbase/cli
  ```
 </dx-alert>
 
-
+ 
 ## 步骤1：创建初始项目
 <dx-tabs>
 ::: MacOS&nbsp;或&nbsp;Linux
@@ -35,7 +35,7 @@ mkdir my-cloudbase-app && cd my-cloudbase-app && touch index.html && touch cloud
 :::
 </dx-tabs>
  
- - 以下是 `index.html` 内容，我们尝试登录云开发，如果成功，那么产生一个弹窗：
+ - 以下是 `index.html` 内容，后续我们启动服务器后尝试登录云开发，如果成功，那么产生一个弹窗：
 <dx-codeblock>
 :::  html
 <html>
@@ -44,7 +44,8 @@ mkdir my-cloudbase-app && cd my-cloudbase-app && touch index.html && touch cloud
     <script src="https://imgcache.qq.com/qcloud/cloudbase-js-sdk/1.5.0/cloudbase.full.js"></script>
     <script>
       const app = cloudbase.init({
-        env: "您的环境ID" // 此处填入您的环境ID
+        env: "您的环境ID", // 此处填入您的环境ID
+        region: "环境所在地域" // 如非上海环境，请显式指定地域，详见：https://docs.cloudbase.net/api-reference/webv2/initialization#%E5%9C%B0%E5%9F%9F
       });
       app
         .auth()
@@ -59,6 +60,7 @@ mkdir my-cloudbase-app && cd my-cloudbase-app && touch index.html && touch cloud
     Hello Cloudbase!
   </body>
 </html>
+
 :::
 </dx-codeblock>
 
@@ -89,12 +91,12 @@ npx serve
 
 >? 如果 SDK 成功使用匿名身份登录，那么您应该可以看到一个弹窗。
 
-登录成功后，便可以访问和使用云开发的各类资源，详情请参见 [Web SDK 文档](https://docs.cloudbase.net/api-reference/webv2/initialization.html)。
+登录成功后，便可以访问和使用云开发的各类资源，详情请参见 [Web SDK 文档](https://docs.cloudbase.net/api-reference/webv2/initialization)。
 
-- [登录认证](https://docs.cloudbase.net/api-reference/webv2/authentication.html)
-- [云函数](https://docs.cloudbase.net/api-reference/webv2/functions.html)
-- [数据库](https://docs.cloudbase.net/api-reference/webv2/database.html)
-- [文件存储](https://docs.cloudbase.net/api-reference/webv2/storage.html)
+- [登录认证](https://docs.cloudbase.net/api-reference/webv2/authentication)
+- [云函数](https://docs.cloudbase.net/api-reference/webv2/functions)
+- [数据库](https://docs.cloudbase.net/api-reference/webv2/database)
+- [文件存储](https://docs.cloudbase.net/api-reference/webv2/storage)
 
 ## 第 5 步（可选）：使用云开发部署静态页面
 1. 开通 [静态网站服务](https://console.cloud.tencent.com/tcb/hosting)。

@@ -1,7 +1,5 @@
-
-
 ## 现象描述
-使用 VPN 连接建立 VPC 与 IDC 的通信，完成配置后，发现 VPN 通道状态为【未联通】。
+使用 VPN 连接建立 VPC 与 IDC 的通信，完成配置后，发现 VPN 通道状态为**未联通**。
 ![](https://main.qcloudimg.com/raw/d37bb0a17e5b7ab17db816872ff5dfa5.png)
 
 ## 可能原因
@@ -45,4 +43,6 @@ display current-configuration configuration ipsec  policy
    - 若是，请执行 [步骤6](#step6)。
    - 若否，请修改相应参数，确保两端配置一致，然后再查看 VPN 通道状态是否已联通，如已联通，则问题解决，结束；如未联通，则继续执行 [步骤6](#step6)。
 6. [](id:step6)请收集以上检查信息，并[ 提交工单 ](https://console.cloud.tencent.com/workorder/category)或联系设备厂商跟进处理。
+
+
 

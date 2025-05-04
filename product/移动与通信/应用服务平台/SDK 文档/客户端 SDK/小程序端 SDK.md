@@ -4,7 +4,7 @@
 ### 支持版本
 在开发过程中，请在微信开发者工具中，单击工具菜单中的**设置**，在**项目设置** > **本地设置** > **调试基础库**中选择2.2.3或以上版本。
 
-
+ 
 ### 开发文档
 
 * [云存储](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/guide/storage.html)
@@ -24,3 +24,4 @@ QQ 小程序的 SDK，已经直接内置到 QQ 小程序运行框架内，无需
 * [数据库](https://q.qq.com/wiki/cloud/guide/database/)
 * [云函数](https://q.qq.com/wiki/cloud/guide/functions/)
 * [扩展能力](https://q.qq.com/wiki/cloud/guide/extension/)
+

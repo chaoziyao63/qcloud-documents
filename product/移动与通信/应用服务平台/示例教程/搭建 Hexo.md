@@ -9,10 +9,10 @@
 2. 安装 CloudBase CLI。打开命令提示符，执行如下命令：
 <dx-codeblock>
 :::  plaintext
-npm i -g @cloudbase/cli hexo-cli
+sudo npm i -g @cloudbase/cli hexo-cli
 :::
 </dx-codeblock>
-3. 执行完毕后，在本地新建名称为 Hexo 的文件夹。在该文件夹中，打开命令提示符，并执行如下命令进行初始化：
+3. <span id="step1.3"></span>执行完毕后，在本地新建名称为 Hexo 的文件夹。在该文件夹中，打开命令提示符，并执行如下命令进行初始化：
 <dx-codeblock>
 :::  plaintext
 hexo init
@@ -27,23 +27,17 @@ hexo s
 预览后，在浏览器中打开 [localhost:4000](http://localhost:4000)，即可看到部署的 Hexo 博客。![](https://main.qcloudimg.com/raw/5b91e6303e40aea5c1d5f0cfc521dc4a.png)
 
 ## 步骤2：创建云开发环境
-
 1. 登录腾讯云 [云开发控制台](https://console.cloud.tencent.com/tcb)，单击**立即创建并使用**，新建一个环境来进行部署。
-   ![](https://main.qcloudimg.com/raw/4b8ab97312e8cf697d3de48bf8c6d507.jpg)
-   如果您之前创建过环境，可以继续使用已创建的**按量计费**环境，或者再次**新建环境**。
-    ![](https://main.qcloudimg.com/raw/ac440a0f9e91f1f1dd3ac779d28ca008.jpg)
-2. 在新建环境窗口中，根据实际需求填写环境名称，选择**按量计费**，单击**立即开通**即可开通环境。
-   ![](https://main.qcloudimg.com/raw/5516e22060227892fe254d6027d343bf.jpg)
-3. <span id="step2.3"></span>开通成功之后，单击环境名称，进入环境总览页面。如下所示：
-   ![](https://main.qcloudimg.com/raw/c7fb3e0eaacfd716fddd0914a43eff00.jpg)
->!请记住您的环境 ID，这个 ID 在后续步骤将被使用。您可单击**环境Id**右侧的<img src="https://main.qcloudimg.com/raw/a06f957521023a64e977041f9181f251.jpg"  style="margin:0;">图标进行复制。
-4. 单击左侧菜单栏中的**静态网站托管**，在页面中单击**开启使用**，开通静态托管服务。
-![](https://main.qcloudimg.com/raw/b2722f1c74c77d582802a0ddedf1823c.png)
-当您能看到如下界面时，即说明开通成功。
+   如果您之前创建过环境，可以继续使用已创建的环境，或者再次**新建环境**。
+![](https://qcloudimg.tencent-cloud.cn/raw/fca84c8fc0c7322302664d9461f753bc.png)
+2. 在新建环境窗口中，根据实际需求填写环境名称，选择**套餐**，单击**立即开通**即可开通环境。
+<img style="width:978px; max-width: inherit;" src="https://qcloudimg.tencent-cloud.cn/raw/e049812a62553fd28aff74e12af7a6d9.png" />
+3. <span id="step1.3"></span>开通成功之后，单击环境名称，进入环境总览页面。请记住您的环境 ID，这个 ID 在后续步骤将被使用，如下所示：
+![](https://qcloudimg.tencent-cloud.cn/raw/9bd73d8d527c1e9aa7a0935c9a912fef.png)
+4. 单击左侧菜单栏中的**静态网站托管**，在页面中单击**开通静态托管服务**。
+<img style="width:978px; max-width: inherit;" src="https://qcloudimg.tencent-cloud.cn/raw/531b34297e477ab275d0238b47f38184.png" /><br>
+当您能看到如下界面时，即说明静态网站托管开通成功。
 ![](https://main.qcloudimg.com/raw/c76868e35d23f97bbd39f261073385a6.jpg)
-
-
-
 
 
 ## 步骤3：初始化云开发 CLI
@@ -52,20 +46,20 @@ hexo s
 ```plaintext
 cloudbase login
 ```
-2. 执行命令时，系统将拉起浏览器授权，请登录上述 [步骤2](#step2.3) 中创建云开发环境的账号，进行确认授权。
+2. 执行命令时，系统将拉起浏览器授权，请登录上述 [步骤2.3](#step2.3) 中创建云开发环境的账号，进行确认授权。
 ![](https://main.qcloudimg.com/raw/07bbd145af217f65a4c321d977fdcb32.jpg)
 
 
 
 ## 步骤4：构建 Hexo 部署文件
 
-1. 打开命令提示符，进入到 [步骤1](#step1.3) 创建的 Hexo 文件夹中，执行如下命令：
+1. 打开命令提示符，进入到 [步骤1.3](#step1.3) 创建的 Hexo 文件夹中，执行如下命令：
 ```plaintext
 Hexo g
 ```
 2. Hexo 将会生成部署文件，默认将文件生成在 Public 文件夹下：
 ![](https://main.qcloudimg.com/raw/8d2308d3afe74030237f03545d9371fc.png)
-3. 执行如下命令，将 Hexo 部署到云开发静态托管中（需要将 EnvID 替换为 [步骤2](#step2.3) 中您创建的环境 ID）。
+3. 执行如下命令，将 Hexo 部署到云开发静态托管中（需要将 EnvID 替换为 [步骤2.3](#step2.3) 中您创建的环境 ID）。
 ```plaintext
 cloudbase hosting deploy public -e [EnvID]
 ```
@@ -123,7 +117,7 @@ jobs:
 前往项目 Github 文件夹的**Settings**标签页，在项目的**Secrets**中配置 [准备工作](#preparation) 步骤获取的 `SECRET_ID`、`SECRET_KEY`、`ENV_ID`。
 ![](https://main.qcloudimg.com/raw/8b2adcfb183707a7c8551c73555d36c1.png)
 3. 自动部署。
-配置完后即可提交代码体验自动部署，在每次 `git push` 命令完成后，`Actions` 都会自动运行，将项目的静态资源部署到您的云开发静态托管环境中，部署成功之后即可通过云开发提供的 [默认域名](https://console.cloud.tencent.com/tcb/hosting/index) 访问来您的网站。
+配置完后即可提交代码体验自动部署，在每次 `git push` 命令完成后，`Actions` 都会自动运行，将项目的静态资源部署到您的云开发静态托管环境中，部署成功之后即可通过云开发提供的 [默认域名](https://console.cloud.tencent.com/tcb/hosting/index) 来访问您的网站。
 ![](https://main.qcloudimg.com/raw/d4528f2cf413b02e4c48b7b3e438b0db.png)
 
 ### 更多扩展玩法

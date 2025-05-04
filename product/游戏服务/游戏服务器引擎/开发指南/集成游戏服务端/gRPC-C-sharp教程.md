@@ -1,3 +1,5 @@
+>!由于产品逻辑已无法满足游戏行业技术发展，游戏服务器伸缩 GSE 将于2022年6月1日下线，请您在2022年5月31日前完成服务迁移。
+
 
 ## 安装 gRPC
 1. 使用 gRPC C# 时，需要先安装 .Net Core 3.1 SDK。以 CentOS 操作系统为例，版本不得低于 CentOS 7 或 CentOS 8。
@@ -23,7 +25,11 @@ sudo rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-
 ## 定义服务
  gRPC 通过 protocol buffers 实现定义一个服务：一个 RPC 服务通过参数和返回类型来指定可以远程调用的方法。
 
->?我们提供定义服务的 proto 文件，请您在 [proto文件](https://cloud.tencent.com/document/product/1165/46111) 里下载使用，无需自己生成。
+<dx-alert infotype="explain" title="">
+我们提供定义服务的 proto 文件，请您在 [proto 文件](https://cloud.tencent.com/document/product/1165/46111) 里下载使用，无需自己生成。
+</dx-alert>
+
+
 
 ## 生成 gRPC 代码
 1. 定义好服务后，通过 protocol buffer 编译器 protoc 生成客户端和服务端的代码（任意 gRPC 支持的语言）。 
@@ -43,8 +49,7 @@ sudo rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-
        项目依赖于 proto/csharp-demo 文件夹中的 GameServerGrpcSdkService.proto 和 GseGrpcSdkService.proto 两个 proto 文件。
 
 ## 游戏进程集成流程
-![](https://main.qcloudimg.com/raw/c20b151d51ea9917c4311c4dbc844b73.png)
-
+![](https://qcloudimg.tencent-cloud.cn/raw/68245d89e36aa1cbcf47069be18ba165.png)
 #### Game Server 回调接口列表
 
 | 接口名称 | 接口功能|
@@ -192,8 +197,8 @@ public static GseResponse TerminateGameServerSession()
 9. Game Server 调用 ProcessEnding 接口会立刻结束进程，将服务器进程状态更改为“已终止”，并回收资源。
 <dx-codeblock>
 :::  java 
-//主动调用：一局游戏对应一个进程，当一局游戏结束后主动调用ProcessEnding接口
-//被动调用：当缩容或进程异常健康检查失败时，根据保护策略被动调用ProcessEnding接口，配置完全保护和时限保护策略时需要先判断游戏服务器会话上有无玩家，再被动调用
+//主动调用：一局游戏对应一个进程，当一局游戏结束后主动调用 ProcessEnding 接口
+//被动调用：当缩容或进程异常健康检查失败时，根据保护策略被动调用 ProcessEnding 接口，配置完全保护和时限保护策略时需要先判断游戏服务器会话上有无玩家，再被动调用
 public static GseResponse ProcessEnding()
 {
 	logger.Println($"Process ending, pid: {pid}");
@@ -269,7 +274,7 @@ Host.CreateDefaultBuilder(args)
 	{
 		webBuilder.ConfigureKestrel(options =>
 		{
-			 // gRPC 端口（设置不带TLS证书的 HTTP/2 端点）
+			 // gRPC 端口（设置不带 TLS 证书的 HTTP/2 端点）
 			options.ListenAnyIP(GrpcPort, o => o.Protocols = 
 					HttpProtocols.Http2);
 

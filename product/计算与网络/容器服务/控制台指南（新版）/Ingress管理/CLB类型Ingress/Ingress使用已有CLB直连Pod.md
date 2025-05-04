@@ -10,7 +10,7 @@
   - 仅支持使用通过负载均衡控制台创建的负载均衡器，不支持使用由 `Service Controller` 自动创建和管理的负载均衡，即 Service 和 Ingress 不能混用同一个负载均衡。
   - `Ingress Controller` 不负责负载均衡的资源管理，即在 Ingress 资源删除时，负载均衡资源不会被删除回收。
 
-## 使用场景示例
+## 使用场景 
 
 ### 使用包年包月的负载均衡对外提供服务
 `Ingress Controller` 管理负载均衡生命周期时，仅支持购买按量计费的资源。但由于包年包月的负载均衡在价格上有一定的优势，用户需要长时间使用负载均衡时，通常会优先选择购买包年包月负载均衡。
@@ -32,4 +32,4 @@ spec:
               servicePort: 80
             path: /
 ```
->? `kubernetes.io/ingress.existLbId: lb-mgzu3mpx` 注解表明了该 Ingress 将使用已有负载均衡 `lb-mgzu3mpx` 进行 Ingress 服务配置。
+`kubernetes.io/ingress.existLbId: lb-mgzu3mpx` 注解表明了该 Ingress 将使用已有负载均衡 `lb-mgzu3mpx` 进行 Ingress 服务配置。

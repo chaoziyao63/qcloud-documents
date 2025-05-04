@@ -13,7 +13,7 @@
 可以，实时音视频支持全平台互通。
 
 [](id:que4)
-###  TRTC 移动端怎么实现录屏（屏幕分享）？	
+###  TRTC 移动端怎么实现录屏（屏幕分享）？  
 - **Android 端**：Version 7.2 及以上版本支持手机录屏，具体实践方法请参见 [实时屏幕分享（Android）](https://cloud.tencent.com/document/product/647/45751)。
 - **iOS 端**：Version 7.2 及以上版本支持 App 内录屏；Version 7.6 及以上版本支持手机录屏和 App 内录屏。具体实践方法请参见 [实时屏幕分享（iOS）](https://cloud.tencent.com/document/product/647/45750)。
 
@@ -46,7 +46,7 @@ TRTC 6.3 版本开始已提供 arm64-v8a 架构 ABI 支持。
 可以使用 [onRemoteUserLeaveRoom](https://liteav.sdk.qcloud.com/doc/api/zh-cn/group__TRTCCloudDelegate__ios.html#afa7d16e1e4c66d938fc2bc69f3e34c28) 来监听用户离开房间事件，且该接口仅在 VideoCall 的所有用户和 LIVE 模式下的主播离开房间时会触发回调，观众离开房间不会有回调。 
 
 [](id:que11)
-### 手机锁屏状态，视频如何拨通？
+### 手机锁屏状态、App 在后台或 App 被关闭，音视频如何拨通？
 实现离线接听等功能，详情请参见 [实现离线接听](https://cloud.tencent.com/document/product/647/42047#.E6.AD.A5.E9.AA.A47.EF.BC.9A.E5.AE.9E.E7.8E.B0.E7.A6.BB.E7.BA.BF.E6.8E.A5.E5.90.AC)。
 
 [](id:que12)
@@ -60,7 +60,7 @@ TRTC 6.3 版本开始已提供 arm64-v8a 架构 ABI 支持。
 双方都可以主动发起，观众和主播发起逻辑一致，具体操作请参见  [跑通直播模式(Android)](https://cloud.tencent.com/document/product/647/35428) 。
 
 [](id:que14)
-### 多人视频会议中，移动端和 Web 端是否可以进入同一房间？
+### 多人音视频房间中，移动端和 Web 端是否可以进入同一房间？
 可以。需保证 [SDKAppID](https://console.cloud.tencent.com/trtc/app) 和房间号一致，且用户 ID 不一致。
 
 [](id:que15)

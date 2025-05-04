@@ -1,5 +1,5 @@
 ## TEduBoardCallback
-白板事件回调接口，请参考 [回调定义文档](https://doc.qcloudtiw.com/win32/2.6.4.216/struct_t_edu_board_callback.html)
+白板事件回调接口，请参考 [回调定义文档](https://doc.qcloudtiw.com/win32/latest/struct_t_edu_board_callback.html)
 
 ## 通用事件回调
 
@@ -110,7 +110,7 @@ virtual void onTEBOffscreenPaint(const void *buffer, uint32_t width, uint32_t he
 | buffer | const void * | 白板数据  |
 | width | uint32_t | 白板像素数据的宽度  |
 | height | uint32_t | 白板像素数据的高度  |
-| dirtyRects | const TEduBoardRect * | 需要重绘的矩形区域数组（可能有多个）  |
+| dirtyRects | const TEduBoardRect * | 需要重绘的矩形区域数组（有一定概率有多个）  |
 | dirtyRectCount | uint32_t | 需要重绘的矩形区域数组个数  |
 
 #### 警告
@@ -321,21 +321,6 @@ virtual void onTEBSnapshot(const char *path)
 
 
 ## 文件操作回调
-
-### onTEBFileTranscodeProgress
-文件转码进度回调 
-``` C++
-virtual void onTEBFileTranscodeProgress(const char *path, const char *errorCode, const char *errorMsg, const TEduBoardTranscodeFileResult &result)
-```
-#### 参数
-
-| 参数 | 类型 | 含义 |
-| --- | --- | --- |
-| path | const char * | 正在转码的本地文件路径  |
-| errorCode | const char * | 文件转码错误码，无异常时为空字符串 ""  |
-| errorMsg | const char * | 文件转码错误信息，无异常时为空字符串 ""  |
-| result | const TEduBoardTranscodeFileResult & | 文件转码结果  |
-
 
 ### onTEBAddTranscodeFile
 增加转码文件回调 
@@ -592,4 +577,28 @@ virtual void onTEBGroupStatusChanged(bool enable, const char *classGroupId, TEdu
 | messgae | const char * | 操作信息  |
 
 
+### onTEBBoardScrollChanged
+``` C++
+virtual void onTEBBoardScrollChanged(const char * boardId, int trigger, double scrollLeft, double scrollTop, int scale)
+```
 
+#### 参数
+
+| 参数 | 类型 | 含义 |
+| --- | --- | --- |
+| boardId | const char * | 白板id |
+| trigger | int | 事件触发来源 |
+| scrollLeft | double | 左侧滚动百分比距离 |
+| scrollTop | double | 顶部滚动百分比距离 |
+| scale | int | 白板缩放比 |
+
+### onTEBElementsPositionChange
+框选工具选中元素回调 
+``` C++
+virtual void onTEBElementsPositionChange(const TEduBoardSelectedElementInfoList &selElementList)
+```
+#### 参数
+
+| 参数 | 类型 | 含义 |
+| --- | --- | --- |
+| selElementList | const TEduBoardSelectedElementInfoList & | 选中的元素列表 ID  |

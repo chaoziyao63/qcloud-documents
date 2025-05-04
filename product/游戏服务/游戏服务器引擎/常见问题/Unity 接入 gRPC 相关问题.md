@@ -1,3 +1,5 @@
+>!由于产品逻辑已无法满足游戏行业技术发展，游戏服务器伸缩 GSE 将于2022年6月1日下线，请您在2022年5月31日前完成服务迁移。
+
 
 
 ### 将下载的 `grpc_unity_package.VERSION.zip` 文件解压到 Unity 项目中后，Unity Editor 报错 （例如[ 缺陷22251](https://github.com/grpc/grpc/issues/22251) 中描述）怎么处理？
@@ -9,7 +11,7 @@
 
 ### 打包 Linux 服务端程序，运行时出现 `Unable to preload the following plugins: ScreenSelector.so` 错误怎么处理？
 <img src="https://main.qcloudimg.com/raw/f2926b2ac676f2e1e1ce85b8bae397f1.png" style="width: 718px;"></img><br>
-**解决方案**：Unity Editor 中，在 `【File】>【Build Settings】` 下勾选  `【Server Build】`，重新打包。
+**解决方案**：Unity Editor 中，在 **File**>**Build Settings** 下勾选  **Server Build**，重新打包。
 <img src="https://main.qcloudimg.com/raw/3ffa6a320c4269669c411f32cf7597f0.png" style="width: 718px;"></img>
 
 ### 打包 Windows 服务端程序，并使用 GSE 提供的 Windows Server 2012 R2 数据中心版64位英文版镜像创建服务器运行时，出现如下图所示的问题怎么处理？

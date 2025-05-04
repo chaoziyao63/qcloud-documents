@@ -4,10 +4,11 @@ GitLab 是使用 Ruby 开发的开源版本管理系统，以 Git 作为代码�
 
 
 ## 示例版本
-本文使用的云服务器配置如下：
-- vCPU：2核
-- 内存：4GB
-- Linux 操作系统：本文以 CentOS 7.7 为例
+- GitLab：社区版 14.6.2 
+- 本文使用的云服务器配置如下：
+	- vCPU：2核
+	- 内存：4GB
+	- Linux 操作系统：以 CentOS 8.2 及 CentOS 7.9 为例
 
 ## 前提条件
 - 已购买 Linux 云服务器。如果您还未购买云服务器，请参考 [快速配置 Linux 云服务器](https://cloud.tencent.com/document/product/213/2936)。
@@ -15,13 +16,20 @@ GitLab 是使用 Ruby 开发的开源版本管理系统，以 Git 作为代码�
 
 ## 操作步骤
 ### 安装 GitLab
-1. [使用标准方式登录 Linux 实例（推荐）](https://cloud.tencent.com/document/product/213/5436)。您也可以根据实际操作习惯，选择其他不同的登录方式：
- - [使用远程登录软件登录 Linux 实例](https://cloud.tencent.com/document/product/213/35699)
- - [使用 SSH 登录 Linux 实例](https://cloud.tencent.com/document/product/213/35700)
-2. 执行以下命令，安装依赖包。
+1. 登录实例，详情请参见 [使用标准方式登录 Linux 实例（推荐）](https://cloud.tencent.com/document/product/213/5436)。
+2. 对应实际使用的操作系统执行以下命令，安装依赖包。
+<dx-tabs>
+::: CentOS 8.2
+```
+yum install -y curl policycoreutils-python-utils openssh-server
+```
+:::
+::: CentOS 7.9
 ```
 yum install -y curl policycoreutils-python openssh-server
 ```
+:::
+</dx-tabs>
 3. 依次执行以下命令，设置 SSH 开机自启动并启动 SSH 服务。
 ```
 systemctl enable sshd
@@ -58,26 +66,40 @@ sudo EXTERNAL_URL="实例公网 IP 地址" yum install -y gitlab-ce
 ```
 如何获取实例公网 IP，请参见 [获取公网 IP 地址](https://cloud.tencent.com/document/product/213/17940)。
 12. 在本地浏览器中访问已获取的公网 IP，返回页面如下所示，则表示已成功安装 GitLab。
->!请在该页面配置登录 GitLab 帐户的密码。
->
-![](https://main.qcloudimg.com/raw/791f5250c2bca059369a141c047f2c21.png)
+<img src="https://qcloudimg.tencent-cloud.cn/raw/abaf3b700a58ed5b4a1e13e9d82eaf7e.png"/>
 
+
+### 设置管理员帐户密码
+1. 获取管理员帐户默认密码。
+ 登录实例，并执行以下命令获取管理员 `root` 帐户登录密码。
+```
+cat /etc/gitlab/initial_root_password
+```
+获取如下图所示密码：
+![](https://qcloudimg.tencent-cloud.cn/raw/01bfa701452cc470fbdbfb82ab294237.png)
+2. 登录 GitLab。
+在本地浏览器中访问云服务器的公网 IP，进入 GitLab 登录界面。使用 `root` 帐户及已获取的登录密码进行登录。
+3. 修改管理员帐户密码。
+由于保存默认密码的文件将在首次配置运行24小时后自动删除，请尽快修改 `root` 帐户登录密码。
+ 1. 选择页面右上角的用户头像，在弹出菜单中选择 **Perferences**。
+ 2. 在 “User Settings” 页面中，选择左侧导航栏的 **Password**。
+ 3. 在页面中输入目前使用密码，新密码及确认新密码后，单击 **Save Password** 即可。如下图所示：
+ ![](https://qcloudimg.tencent-cloud.cn/raw/25adb5b68d48873392684d1a1030bbe1.png)
 
 ### 创建项目
-1. 在本地浏览器中访问云服务器的公网 IP，进入 GitLab 登录界面。使用 `root` 帐户及已设置的登录密码进行登录。如下图所示：
-![](https://main.qcloudimg.com/raw/c0639741b40c1fa33d41434c0222c13b.png)
+1. 使用 `root` 帐户及已设置的登录密码进行登录。
 2. 根据页面指引创建私人项目，本文以 `test` 为例。如下图所示：
-![](https://main.qcloudimg.com/raw/912805dfffcba06558d3adbe8b33b4bc.png)
-3. 成功创建项目后，单击页面上方提示中的【Add SSH Key】。
+![](https://qcloudimg.tencent-cloud.cn/raw/a6d85a83b86a44c1f39dbd363a3311ce.png)
+3. 成功创建项目后，单击页面上方提示中的 **Add SSH Key**。
 4. 进入 “SSH Keys” 页面，按照以下步骤添加 SSH Key：
  1. 通过 [获取密钥](#getKey) 步骤，获取需纳入项目管理 PC 的密钥信息，粘贴在 “Key” 中。
  2. 在 “Title” 中自定义命名该密钥。
- 3. 单击【Add key】即可添加密钥。如下图所示：
-![](https://main.qcloudimg.com/raw/c8d21821f0d6919a650cf36d43666f06.png)
+ 3. 单击 **Add key** 即可添加密钥。如下图所示：
+![](https://qcloudimg.tencent-cloud.cn/raw/504b7a69215471516f7ace36bb5606af.png)
 如下图所示则表示密钥添加成功：
-![](https://main.qcloudimg.com/raw/6908a9710bd01d57c01892b31247bc02.png)
-5. <span id="Step5"></span>返回项目首页，单击【clone】记录项目地址。如下图所示：
-![](https://main.qcloudimg.com/raw/972726ec33e5a92c0a778a700ae9b4b0.png)
+![](https://qcloudimg.tencent-cloud.cn/raw/2d46dcb48b51243ce4fc91b319b3ede3.png)
+5. [](id:Step5)返回项目首页，单击 **clone** 记录项目地址。如下图所示：
+![](https://qcloudimg.tencent-cloud.cn/raw/9edb130321b5df140cfc863c73f6837d.png)
 
 
 ### 克隆项目
@@ -91,7 +113,7 @@ git config --global user.email "xxx@example.com"
 ```
 3. 执行以下命令，克隆项目。其中“项目地址”请替换为已在 [步骤5](#Step5) 中获取的项目地址。
 ```
-git clone “项目地址”
+git clone "项目地址"
 ```
 克隆项目成功后，会在本地生成同名目录且包含项目中所有文件。
 
@@ -114,13 +136,13 @@ git commit -m "test.sh"
 ```
 5. 执行以下命令，将 test.sh 同步至 GitLab 服务器。
 ```
-git push -u origin master
+git push
 ```
 返回 test 项目页面，即可查看文件已成功上传。如下图所示：
-![](https://main.qcloudimg.com/raw/e208c7a0f7399e4a42a1bb3d17a89c1c.png)
+![](https://qcloudimg.tencent-cloud.cn/raw/0440c9a53b3a93d056119fd47f39638e.png)
 
 ## 相关操作
-### 获取密钥<span id="getKey"></span>
+### 获取密钥[](id:getKey)
 1. 在需要纳入项目管理的 PC 上执行以下命令，安装 Git。
 ```
 yum install -y git

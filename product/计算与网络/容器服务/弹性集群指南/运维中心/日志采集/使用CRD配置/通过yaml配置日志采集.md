@@ -1,9 +1,9 @@
-本文介绍通过 YAML 方式使用 CRD 配置 EKS 集群的日志采集功能。
+本文介绍通过 YAML 方式使用 CRD 配置 TKE Serverless 集群的日志采集功能。
 
 
 ## 前提条件
 
-登录 [弹性容器服务控制台](https://console.cloud.tencent.com/tke2/ops/list?rid=8)，并为弹性集群开启日志采集功能。操作详情请参见 [开启日志采集](https://cloud.tencent.com/document/product/457/56751#.E6.93.8D.E4.BD.9C.E6.AD.A5.E9.AA.A4)。
+登录 [容器服务控制台](https://console.cloud.tencent.com/tke2/cluster?rid=1)，并为 Serverless 集群开启日志采集功能。操作详情请参见 [开启日志采集](https://cloud.tencent.com/document/product/457/56751#.E6.93.8D.E4.BD.9C.E6.AD.A5.E9.AA.A4)。
 
 
 
@@ -64,7 +64,7 @@ spec:
 ## 日志解析格式
 <dx-tabs>
 ::: 单行全文格式
-单行全文日志是指一行日志内容为一条完整的日志。日志服务在采集的时候，将使用换行符 `\n` 来作为一条日志日志的结束符。为了统一结构化管理，每条日志都会存在一个默认的键值 `__CONTENT__`，但日志数据本身不再进行日志结构化处理，也不会提取日志字段，日志属性的时间项由日志采集的时间决定。详情请参见 [单行文本格式](https://cloud.tencent.com/document/product/614/17421)。
+单行全文日志是指一行日志内容为一条完整的日志。日志服务在采集的时候，将使用换行符 `\n` 来作为一条日志的结束符。为了统一结构化管理，每条日志都会存在一个默认的键值 `__CONTENT__`，但日志数据本身不再进行日志结构化处理，也不会提取日志字段，日志属性的时间项由日志采集的时间决定。详情请参见 [单行文本格式](https://cloud.tencent.com/document/product/614/17421)。
 
 假设一条日志原始数据为：
 ```

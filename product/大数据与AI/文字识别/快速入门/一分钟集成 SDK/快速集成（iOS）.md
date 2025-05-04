@@ -4,7 +4,8 @@
 
 1. 注册腾讯云账号，单击进入 [文字识别控制台](https://console.cloud.tencent.com/ocr/general)，即可开通相应服务。
 2. 在 [账号中心](https://console.cloud.tencent.com/cam/capi) 获取 API 密钥。
-3. 从 OCR SDK 下载链接中下载 SDK 到本地准备集成。
+3. 前往文字识别客户端 [SDK 接入页面](https://console.cloud.tencent.com/ocr/download) 下载对应 SDK。
+   ![](https://qcloudimg.tencent-cloud.cn/raw/5670370b183dcf34b9751f7437c2618c.png)
 
     
 
@@ -12,51 +13,55 @@
 
 ### iOS 端 OCR SDK 介绍
 
-SDK 中包含了以下 framework 库以及资源文件：
+SDK中包含了以下framework库以及资源文件：
 
-- **OcrSDKKit.framework** - OCR 对外接口、页面设置及网络请求库
-- **YtSDKKit.framework** - 边缘检测逻辑
-- **YTImageRefiner_pub.framework** - 图片解析
-- **tiny_opencv2.framework** - opencv 库
+- **OcrSDKKit.framework** - OCR对外接口、页面设置及网络请求库
+- **YTImageRefiner.framework** - 图片解析
+- **tiny_opencv2.framework** - opencv库
 - **tnn.framework** - 底层深度学习库
 - **OcrSDK.bundle** - 资源文件
-- **ocr-001.bundle** -模型文件
+- **Photos.framework** - 相册资源库
+
+
 
 ### 环境依赖
 
 - 当前 iOS OCR 识别 SDK 版本适用于 iOS 11.0 及以上的版本
 - 开发工具使用 xcode11 或以上版本集成开发
 
+
+
 ### 接入步骤
 
-1. 将 ocr Framework、系统 Framework 库以及 bundle 文件都添加至项目中。
+1. 将ocr Framework、系统Framework库以及bundle 文件都添加至项目中。
 ```
 ├── OcrSDKKit.framework
-├── YtSDKKit.framework
-├── YTImageRefiner_pub.framework
+├── YTImageRefiner.framework
 ├── tiny_opencv2.framework
 └── tnn.framework
 //系统库
 ├── Accelerate.framework
+├── Photos.framework
+├── PhotosUI.framework
 └── CoreML.framework
 ```
 ```
 //资源文件
-├── OcrSDK.bundle
-└── ocr-001.bundle
+└── OcrSDK.bundle
 ```
 2. 添加编译选项
-	- 将**调用 SDK 的 ViewController** 设置为 **Objective-C++Source** 或者更改后缀为 **.mm** (sdk 内部使用了 Objective-C++ 语法)
-	- 将 **Other Linker Flags** 设置为 **-ObjC**
+- 将**调用SDK的ViewController**设置为 **Objective-C++Source** 或者更改后缀为**.mm**(sdk内部使用了Objective-C++语法)
+- **Other Linker Flags**添加为 **-ObjC**
 3. 权限设置
-OCR SDK 需要手机网络、 摄像头、访问相册的使用权限，请添加对应的权限声明。
+OCR SDK需要手机网络、 摄像头、访问相册的使用权限，请添加对应的权限声明。
 ```xml
 <key>Privacy - Camera Usage Description</key>
-<string>OCR 识别需要开启您的摄像头权限，用于识别</string>
+<string>OCR识别需要开启您的摄像头权限，用于识别</string>
 <key>Privacy - Photo Library Usage Description</key>
-<string>OCR 识别需要您开启相册权限，浏览您的照片</string>
+<string>OCR识别需要您开启相册权限，浏览您的照片</string>
+<key>Prevent limited photos access alert</key>
+<Boolean>YES</Boolean>
 ```
-
 
 ### SDK 接口说明
 
@@ -64,7 +69,7 @@ OCR SDK 需要手机网络、 摄像头、访问相册的使用权限，请添�
 
 客户初始化 OCR SDK
 
-```objective-c
+```c
 #import <OcrSDKKit/OcrSDKKit.h>
 #import <OcrSDKKit/OcrSDKConfig.h>
    
@@ -80,13 +85,13 @@ ocrSDKConfig.ocrModeType = _ocrModel;
 /// @param secretId  Secret id
 /// @param secretKey Secret key
 /// @param ocrConfig ocr 配置类
-[[OcrSDKKit sharedInstance] loadSDKConfigWithSecret:nil withSecretKey:nil withConfig:ocrSdkConfig];
+[[OcrSDKKit sharedInstance] loadSDKConfigWithSecretId:nil withSecretKey:nil withConfig:ocrSdkConfig];
 
 ```
 
 #### 	进入 OCR 主页面
 
-```objective-c
+```c
 /*!
 *	OCR UI 配置类：
 */
@@ -110,7 +115,7 @@ customConfigUI.remindConfirmColor = [UIColor blueColor];
 
 OCR SDK 支持使用临时密钥接口，使用临时密钥的好处主要有以下两点，第一将固定密钥与终端分离可以增加安全性；第二因为兑换临时密钥是您完全可控的行为，因此您可以根据自定义规则来控制最终用户的接口访问权限。因此建议您使用临时密钥的方式，具体可以参考文档 [(**临时密钥文档与流程链接**)](https://github.com/TencentCloud/tc-ocr-sdk/tree/master/%E4%B8%B4%E6%97%B6%E5%AF%86%E9%92%A5%E5%85%91%E6%8D%A2)
 
-```objective-c
+```c
 /// @param tmpSecretId 临时 SecretId
 /// @param tmpSecretKey 临时密钥信息
 /// @param token 临时兑换 token
@@ -119,7 +124,7 @@ OCR SDK 支持使用临时密钥接口，使用临时密钥的好处主要有以
 
 #### SDK 资源释放
 
-```objective-c
+```c
 /// 清理 SDK 资源
 [OcrSDKKit clearInstance];
 ```
@@ -141,7 +146,12 @@ OCR SDK 支持使用临时密钥接口，使用临时密钥的好处主要有以
 | OcrType.VehicleLicenseOCR_BACK | 行驶证副页识别模式 |
 | OcrType.DriverLicenseOCR_FRONT | 驾驶证主页识别模式 |
 | OcrType.DriverLicenseOCR_BACK | 驾驶证副页识别模式 |
-
+| OcrType.VinOCR2 | 汽车VIN码识别模式(高精度版) |
+| OcrType.HKIDCardoCR_03 | 香港身份证03版本识别模式 |
+| OcrType.IDCardOCR_HK18 | 香港身份证18版本识别模式 |
+| OcrType.PermitOCR | 港澳台通行证识别模式 |
+| OcrType.MLIDPassportocR | 国际护照识别模式 |
+| OcrType.HmtResidentPermitOCR | 港澳台居住证 |
 
 
 ### 常见错误
@@ -149,3 +159,5 @@ OCR SDK 支持使用临时密钥接口，使用临时密钥的好处主要有以
 1. 当提示**requsetConfigDict is nil**，检查下是不是在进入 SDK 时，执行了 [OcrSDKKit cleanInstance] 把密钥和配置设置清除了。
 2. SDK 页面依托于 UIWindow，所以需要在 AppDelegate.h 中添加 **@property (**nonatomic**, **strong**) UIWindow * window;**。
 3. 当出现进入 SDK 黑屏，添加设置**Other Linker Flags**添加 **-ObjC**。打印日志 **Application tried to push a nil view controller on target....**，原因是 self.storyboard 等于 nil，可以参考 demo，在调用 SDK 页面的 ViewController 手动加载 xib 页面，然后调用 SDK 进入识别页面。
+4. Building for iOS Simulator, but the linked and embedded framework ‘OcrSDKKit .framework' was built for iOS + iOS Simulator.
+   解决方法是：Buil Settings --> Build Options --> Validate Workspace 改为Yes

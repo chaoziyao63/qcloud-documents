@@ -5,13 +5,16 @@ CDWPG 是腾讯云大数据数据仓库产品，通过 DTS 实现云数据库 My
 ## 注意事项 
 - DTS 在执行全量数据同步时，会占用一定源端实例资源，可能会导致源实例负载上升，增加数据库自身压力。如果您数据库配置过低，建议您在业务低峰期进行。
 - 为了避免数据重复，请确保需要同步的表具有主键或者非空唯一键。
+- 数据同步时，DTS 会使用执行同步任务的账号在源库中写入系统库`__tencentdb__`，用于记录同步任务过程中的数据对比信息。
+  - 为保证后续数据对比问题可定位，同步任务结束后不会删除源库中的`__tencentdb__`。
+  - `__tencentdb__`系统库占用空间非常小，约为源库存储空间的千分之一到万分之一（例如源库为50G，则`__tencentdb__`系统库约为 5K-50K） ，并且采用单线程，等待连接机制，所以对源库的性能几乎无影响，也不会抢占资源。 
 
 ## 前提条件
 - 已 [创建 CDWPG](https://cloud.tencent.com/document/product/878/31447)。
 - 需要具备源数据库的权限如下：
 ```
 GRANT RELOAD,LOCK TABLES,REPLICATION CLIENT,REPLICATION SLAVE,SELECT ON *.* TO '迁移帐号'@'%' IDENTIFIED BY '迁移密码';
-GRANT ALL PRIVILEGES ON `__tencentdb__`.* TO '迁移帐号'@'%';
+GRANT ALL PRIVILEGES ON `__tencentdb__`.* TO '迁移帐号'@'%'; //如果源端为腾讯云数据库需要授予`__tencentdb__`权限
 FLUSH PRIVILEGES;
 ```
 - 需要具备目标数据库的权限如下：
@@ -56,7 +59,7 @@ TRIGGER
 | 校验 MySQL 数据库表名和列名是否含有`"`	| CDWPG 不支持`"`作为列名。 |
 
 ## 操作步骤
-1. 登录 [数据同步购买页](https://buy.cloud.tencent.com/dts)，选择相应配置，单击**立即购买**。
+1. 登录 [数据同步购买页](https://buy.cloud.tencent.com/replication)，选择相应配置，单击**立即购买**。
  - 计费模式：支持包年包月和按量计费，目前免费，后续计费会通过邮件和站内信方式提前1个月通知用户。
  - 源实例类型：目前仅支持 MySQL。
  - 源实例地域：选择后不支持再次修改，请选择源实例所在的地域。
@@ -88,6 +91,10 @@ TRIGGER
     - 忽略并继续执行：全量数据初始化会全量追加数据，适用多张表汇聚到一张表中。
  - 同步操作类型：目前只支持 DML 操作。
  - 同步对象：在源库中选择待同步的表对象。
+>?
+>- 如果用户在同步过程中确定会使用 gh-ost、pt-osc 等工具对某张表做 Online DDL，则**同步对象**需要选择这个表所在的整个库（或者整个实例），不能仅选择这个表，否则无法同步 Online DDL 变更产生的临时表数据到目标数据库。
+>- 如果用户在同步过程中确定会对某张表使用 rename 操作（例如将 table A rename 为 table B），则**同步对象**需要选择 table A 所在的整个库（或者整个实例），不能仅选择 table A，否则系统会报错。
+>
 ![](https://main.qcloudimg.com/raw/c1780105f32fdb299e213447881eba92.png)
 6. 在校验任务页面，完成校验并全部校验项通过后，单击**启动任务**。
 如果校验任务不通过，可以参考 [校验不通过处理方法](https://cloud.tencent.com/document/product/571/58685) 修复问题后重新发起校验任务。

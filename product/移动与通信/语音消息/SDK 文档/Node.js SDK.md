@@ -3,7 +3,7 @@ SDK 3.0是云 API 3.0平台的配套工具，您可以通过 SDK 使用所有 [�
 >- 发送语音验证码
 >只需提供验证码数字，如需自定义内容，可以 [发送语音通知](#SendTtsVoice)。例如，当 msg=“5678” 时，您收到的语音通知为`您的语音验证码是五六七八。`。
 >- 发送语音通知
->数字默认按照个十百千万进行播报，可通过在数字前添加英文逗号（,）改变播报方式。例如，当 msg=`您的语音验证码是5678。` 时，您收到的语音通知为`您的语音验证码是五千六百七十八。`，当 msg=`您的语音验证码是5,6,7,8。`时，您收到的语音通知为`您的语音验证码是五六七八。`。
+>数字默认按照个、十、百、千、万进行播报，可通过在数字前添加英文逗号（,）改变播报方式。例如，当 msg=`您的语音验证码是5678。` 时，您收到的语音通知为`您的语音验证码是五千六百七十八。`，当 msg=`您的语音验证码是5,6,7,8。`时，您收到的语音通知为`您的语音验证码是五六七八。`。
 
 
 
@@ -11,7 +11,7 @@ SDK 3.0是云 API 3.0平台的配套工具，您可以通过 SDK 使用所有 [�
 
 - 已开通语音消息服务，具体操作请参见 [快速入门](https://cloud.tencent.com/document/product/1128/37343)。
 - 已准备依赖环境：NODEJS 10.0.0 版本及以上。
-- 已在访问管理控制台 >【[API密钥管理](https://console.cloud.tencent.com/cam/capi)】页面获取 SecretID 和 SecretKey。
+- 已在访问管理控制台 >**[API密钥管理](https://console.cloud.tencent.com/cam/capi)**页面获取 SecretID 和 SecretKey。
  - SecretID 用于标识 API 调用者的身份。
  - SecretKey 用于加密签名字符串和服务器端验证签名字符串的密钥，**SecretKey 需妥善保管，避免泄露**。
 - 语音消息的调用地址为`vms.tencentcloudapi.com`。
@@ -31,7 +31,7 @@ npm install tencentcloud-sdk-nodejs --save
 2. 在您的代码中引用对应模块代码，可参考 [示例代码](#example)。
 
 ### 通过源码包安装
-1. 前往 [GitHub 代码托管地址](https://github.com/tencentcloud/tencentcloud-sdk-nodejs) 或 [快速下载地址](https://tencentcloud-sdk-1253896243.file.myqcloud.com/tencentcloud-sdk-nodejs/tencentcloud-sdk-nodejs.zip)，下载源码压缩包。
+1. 前往 [GitHub 代码托管地址](https://github.com/tencentcloud/tencentcloud-sdk-nodejs)，下载源码压缩包。
 2. 解压源码包到您项目合适的位置。
 3. 在您的代码中引用对应模块代码，可参考 [示例代码](#example)。
 
@@ -115,7 +115,7 @@ const client = new vmsClient({
   })
 ```
 
-### 指定模版发送语音通知[](id:SendTtsVoice)
+### 指定模板发送语音通知[](id:SendTtsVoice)
 
 ```
 const tencentcloud = require("tencentcloud-sdk-nodejs");

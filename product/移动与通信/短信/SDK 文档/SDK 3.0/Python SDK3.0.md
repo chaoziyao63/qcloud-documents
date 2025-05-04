@@ -1,7 +1,7 @@
 SDK 3.0是云 API 3.0平台的配套工具，您可以通过 SDK 使用所有 [短信 API](https://cloud.tencent.com/document/product/382/52077)。新版 SDK 实现了统一化，具有各个语言版本的 SDK 使用方法相同，接口调用方式相同，错误码相同以及返回包格式相同等优点。
 >!
 >- 发送短信相关接口
->一次群发请求最多支持200个号码，如对号码数量有特殊需求请联系 [腾讯云短信小助手](https://tccc.qcloud.com/web/im/index.html#/chat?webAppId=8fa15978f85cb41f7e2ea36920cb3ae1&title=Sms)。
+>一次群发请求最多支持200个号码。
 >- 签名、正文模板相关接口
 >个人认证用户不支持使用签名、正文模板相关接口，只能通过短信控制台 [管理短信签名](https://cloud.tencent.com/document/product/382/37794) 和 [管理短信正文模板](https://cloud.tencent.com/document/product/382/37795)。如需使用该类接口，请将 “个人认证” 变更为 “企业认证”，具体操作请参见 [实名认证变更指引](https://cloud.tencent.com/document/product/378/34075)。
 
@@ -9,34 +9,29 @@ SDK 3.0是云 API 3.0平台的配套工具，您可以通过 SDK 使用所有 [�
 
 ## 前提条件
 
-- 已开通短信服务，具体操作请参见 [国内短信快速入门](https://cloud.tencent.com/document/product/382/37745)。
+- 已开通短信服务，创建签名和模板并通过审核，具体操作请参见 [国内短信快速入门](https://cloud.tencent.com/document/product/382/37745)。
 - 如需发送国内短信，需要先 [购买国内短信套餐包](https://cloud.tencent.com/document/product/382/18060)。
 - 已准备依赖环境：Python 2.7 - 3.6 版本。
-- 已在访问管理控制台 >【[API密钥管理](https://console.cloud.tencent.com/cam/capi)】页面获取 SecretID 和 SecretKey。
+- 已在访问管理控制台 >[**API密钥管理**](https://console.cloud.tencent.com/cam/capi)页面获取 SecretID 和 SecretKey。
  - SecretID 用于标识 API 调用者的身份。
  - SecretKey 用于加密签名字符串和服务器端验证签名字符串的密钥，**SecretKey 需妥善保管，避免泄露**。
 - 短信的调用地址为`sms.tencentcloudapi.com`。
 
 ## 相关资料
 - 各个接口及其参数的详细介绍请参见 [API 文档](https://cloud.tencent.com/document/product/382/52077)。
-- 下载 SDK 源码请访问 [Python SDK 源码](https://github.com/TencentCloud/tencentcloud-sdk-python)。
+- 下载 SDK 源码请访问 [Github 仓库](https://github.com/tencentcloud/tencentcloud-sdk-python) 或者 [Gitee 仓库](https://gitee.com/tencentcloud/tencentcloud-sdk-python)。
 
 ## 安装 SDK
 
 ### 通过 pip 安装（推荐）
-1. 下载并安装 [pip](https://pip.pypa.io/en/stable/installing/?spm=a3c0i.o32026zh.a3.6.74134958lLSo6o)。
-2. 执行以下命令安装 SDK。
-```bash
-pip install tencentcloud-sdk-python
-```
+
+- Github 仓库参考 [通过 pip 安装（推荐）](https://github.com/tencentcloud/tencentcloud-sdk-python#%E9%80%9A%E8%BF%87-pip-%E5%AE%89%E8%A3%85%E6%8E%A8%E8%8D%90)
+- Gitee 仓库参考 [通过 pip 安装（推荐）](https://gitee.com/tencentcloud/tencentcloud-sdk-python#%E9%80%9A%E8%BF%87-pip-%E5%AE%89%E8%A3%85%E6%8E%A8%E8%8D%90)
 
 ### 通过源码包安装
-1. 前往 [Github 代码托管地址](https://github.com/tencentcloud/tencentcloud-sdk-python) 或 [快速下载地址](https://tencentcloud-sdk-1253896243.file.myqcloud.com/tencentcloud-sdk-python/tencentcloud-sdk-python.zip) 下载最新代码。
-2. 解压后依次执行以下命令安装 SDK。
-```bash
-$ cd tencentcloud-sdk-python
-$ python setup.py install
-```
+
+- Github 仓库参考 [通过源码包安装](https://github.com/tencentcloud/tencentcloud-sdk-python#%E9%80%9A%E8%BF%87%E6%BA%90%E7%A0%81%E5%8C%85%E5%AE%89%E8%A3%85)
+- Gitee 仓库参考 [通过源码包安装](https://gitee.com/tencentcloud/tencentcloud-sdk-python#%E9%80%9A%E8%BF%87%E6%BA%90%E7%A0%81%E5%8C%85%E5%AE%89%E8%A3%85)
 
 ## 示例代码[](id:example)
 >?所有示例代码仅作参考，无法直接编译和运行，需根据实际情况进行修改，您也可以根据实际需求使用 [API 3.0 Explorer](https://console.cloud.tencent.com/api/explorer?Product=sms&Version=2021-01-11&Action=SendSms) 自动化生成 Demo 代码。
@@ -45,7 +40,7 @@ $ python setup.py install
 
 ### 发送短信
 
-```
+```python
 # -*- coding: utf-8 -*-
 from tencentcloud.common import credential
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
@@ -61,7 +56,7 @@ try:
     # 这里采用的是从环境变量读取的方式，需要在环境变量中先设置这两个值。
     # 你也可以直接在代码中写死密钥对，但是小心不要将代码复制、上传或者分享给他人，
     # 以免泄露密钥对危及你的财产安全。
-    # CAM密匙查询: https://console.cloud.tencent.com/cam/capi
+    # SecretId、SecretKey 查询: https://console.cloud.tencent.com/cam/capi
     cred = credential.Credential("secretId", "secretKey")
     # cred = credential.Credential(
     #     os.environ.get(""),
@@ -70,7 +65,7 @@ try:
 
     # 实例化一个http选项，可选的，没有特殊需求可以跳过。
     httpProfile = HttpProfile()
-    # 如果需要指定proxy访问接口，可以按照如下方式初始化hp
+    # 如果需要指定proxy访问接口，可以按照如下方式初始化hp（无需要直接忽略）
     # httpProfile = HttpProfile(proxy="http://用户名:密码@代理IP:代理端口")
     httpProfile.reqMethod = "POST"  # post请求(默认为post请求)
     httpProfile.reqTimeout = 30    # 请求超时时间，单位为秒(默认60秒)
@@ -84,7 +79,7 @@ try:
     clientProfile.httpProfile = httpProfile
 
     # 实例化要请求产品(以sms为例)的client对象
-    # 第二个参数是地域信息，可以直接填写字符串ap-guangzhou，或者引用预设的常量
+    # 第二个参数是地域信息，可以直接填写字符串ap-guangzhou，支持的地域列表参考 https://cloud.tencent.com/document/api/382/52071#.E5.9C.B0.E5.9F.9F.E5.88.97.E8.A1.A8
     client = sms_client.SmsClient(cred, "ap-guangzhou", clientProfile)
 
     # 实例化一个请求对象，根据调用的接口和实际情况，可以进一步设置请求参数
@@ -98,33 +93,40 @@ try:
     # SDK提供对基本类型的指针引用封装函数
     # 帮助链接：
     # 短信控制台: https://console.cloud.tencent.com/smsv2
-    # sms helper: https://cloud.tencent.com/document/product/382/3773
+    # 腾讯云短信小助手: https://cloud.tencent.com/document/product/382/3773#.E6.8A.80.E6.9C.AF.E4.BA.A4.E6.B5.81
 
     # 短信应用ID: 短信SdkAppId在 [短信控制台] 添加应用后生成的实际SdkAppId，示例如1400006666
+    # 应用 ID 可前往 [短信控制台](https://console.cloud.tencent.com/smsv2/app-manage) 查看
     req.SmsSdkAppId = "1400787878"
-    # 短信签名内容: 使用 UTF-8 编码，必须填写已审核通过的签名，签名信息可登录 [短信控制台] 查看
-    req.SignName = "xxx"
-    # 短信码号扩展号: 默认未开通，如需开通请联系 [sms helper]
-    req.ExtendCode = ""
-    # 用户的 session 内容: 可以携带用户侧 ID 等上下文信息，server 会原样返回
-    req.SessionContext = "xxx"
-    # 国际/港澳台短信 senderid: 国内短信填空，默认未开通，如需开通请联系 [sms helper]
-    req.SenderId = ""
+    # 短信签名内容: 使用 UTF-8 编码，必须填写已审核通过的签名
+    # 签名信息可前往 [国内短信](https://console.cloud.tencent.com/smsv2/csms-sign) 或 [国际/港澳台短信](https://console.cloud.tencent.com/smsv2/isms-sign) 的签名管理查看
+    req.SignName = "腾讯云"
+    # 模板 ID: 必须填写已审核通过的模板 ID
+    # 模板 ID 可前往 [国内短信](https://console.cloud.tencent.com/smsv2/csms-template) 或 [国际/港澳台短信](https://console.cloud.tencent.com/smsv2/isms-template) 的正文模板管理查看
+    req.TemplateId = "449739"
+    # 模板参数: 模板参数的个数需要与 TemplateId 对应模板的变量个数保持一致，，若无模板参数，则设置为空
+    req.TemplateParamSet = ["1234"]
     # 下发手机号码，采用 E.164 标准，+[国家或地区码][手机号]
     # 示例如：+8613711112222， 其中前面有一个+号 ，86为国家码，13711112222为手机号，最多不要超过200个手机号
     req.PhoneNumberSet = ["+8613711112222"]
-    # 模板 ID: 必须填写已审核通过的模板 ID。模板ID可登录 [短信控制台] 查看
-    req.TemplateId = "449739"
-    # 模板参数: 若无模板参数，则设置为空
-    req.TemplateParamSet = ["666"]
+    # 用户的 session 内容（无需要可忽略）: 可以携带用户侧 ID 等上下文信息，server 会原样返回
+    req.SessionContext = ""
+    # 短信码号扩展号（无需要可忽略）: 默认未开通，如需开通请联系 [腾讯云短信小助手]
+    req.ExtendCode = ""
+    # 国内短信无需填写该项；国际/港澳台短信已申请独立 SenderId 需要填写该字段，默认使用公共 SenderId，无需填写该字段。注：月度使用量达到指定量级可申请独立 SenderId 使用，详情请联系 [腾讯云短信小助手](https://cloud.tencent.com/document/product/382/3773#.E6.8A.80.E6.9C.AF.E4.BA.A4.E6.B5.81)。
+    req.SenderId = ""
 
-
-    # 通过client对象调用DescribeInstances方法发起请求。注意请求方法名与请求对象是对应的。
-    # 返回的resp是一个DescribeInstancesResponse类的实例，与请求对象对应。
     resp = client.SendSms(req)
 
     # 输出json格式的字符串回包
     print(resp.to_json_string(indent=2))
+
+    # 当出现以下错误码时，快速解决方案参考
+    # - [FailedOperation.SignatureIncorrectOrUnapproved](https://cloud.tencent.com/document/product/382/9558#.E7.9F.AD.E4.BF.A1.E5.8F.91.E9.80.81.E6.8F.90.E7.A4.BA.EF.BC.9Afailedoperation.signatureincorrectorunapproved-.E5.A6.82.E4.BD.95.E5.A4.84.E7.90.86.EF.BC.9F)
+    # - [FailedOperation.TemplateIncorrectOrUnapproved](https://cloud.tencent.com/document/product/382/9558#.E7.9F.AD.E4.BF.A1.E5.8F.91.E9.80.81.E6.8F.90.E7.A4.BA.EF.BC.9Afailedoperation.templateincorrectorunapproved-.E5.A6.82.E4.BD.95.E5.A4.84.E7.90.86.EF.BC.9F)
+    # - [UnauthorizedOperation.SmsSdkAppIdVerifyFail](https://cloud.tencent.com/document/product/382/9558#.E7.9F.AD.E4.BF.A1.E5.8F.91.E9.80.81.E6.8F.90.E7.A4.BA.EF.BC.9Aunauthorizedoperation.smssdkappidverifyfail-.E5.A6.82.E4.BD.95.E5.A4.84.E7.90.86.EF.BC.9F)
+    # - [UnsupportedOperation.ContainDomesticAndInternationalPhoneNumber](https://cloud.tencent.com/document/product/382/9558#.E7.9F.AD.E4.BF.A1.E5.8F.91.E9.80.81.E6.8F.90.E7.A4.BA.EF.BC.9Aunsupportedoperation.containdomesticandinternationalphonenumber-.E5.A6.82.E4.BD.95.E5.A4.84.E7.90.86.EF.BC.9F)
+    # - 更多错误，可咨询[腾讯云助手](https://tccc.qcloud.com/web/im/index.html#/chat?webAppId=8fa15978f85cb41f7e2ea36920cb3ae1&title=Sms)
 
 except TencentCloudSDKException as err:
     print(err)
@@ -134,7 +136,7 @@ except TencentCloudSDKException as err:
 
 ### 拉取短信下发状态
 
-```
+```python
 # -*- coding: utf-8 -*-
 from tencentcloud.common import credential
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
@@ -150,7 +152,7 @@ try:
     # 这里采用的是从环境变量读取的方式，需要在环境变量中先设置这两个值。
     # 你也可以直接在代码中写死密钥对，但是小心不要将代码复制、上传或者分享给他人，
     # 以免泄露密钥对危及你的财产安全。
-    # CAM密匙查询: https://console.cloud.tencent.com/cam/capi
+    # SecretId、SecretKey 查询: https://console.cloud.tencent.com/cam/capi
     cred = credential.Credential("secretId", "secretKey")
     # cred = credential.Credential(
     #     os.environ.get(""),
@@ -173,7 +175,7 @@ try:
     clientProfile.httpProfile = httpProfile
 
     # 实例化要请求产品(以sms为例)的client对象
-    # 第二个参数是地域信息，可以直接填写字符串ap-guangzhou，或者引用预设的常量
+    # 第二个参数是地域信息，可以直接填写字符串ap-guangzhou，支持的地域列表参考 https://cloud.tencent.com/document/api/382/52071#.E5.9C.B0.E5.9F.9F.E5.88.97.E8.A1.A8
     client = sms_client.SmsClient(cred, "ap-guangzhou", clientProfile)
 
     # 实例化一个请求对象，根据调用的接口和实际情况，可以进一步设置请求参数
@@ -187,7 +189,7 @@ try:
     # SDK提供对基本类型的指针引用封装函数
     # 帮助链接：
     # 短信控制台: https://console.cloud.tencent.com/smsv2
-    # sms helper: https://cloud.tencent.com/document/product/382/3773
+    # 腾讯云短信小助手: https://cloud.tencent.com/document/product/382/3773#.E6.8A.80.E6.9C.AF.E4.BA.A4.E6.B5.81
 
     # 短信应用ID: 短信SdkAppId在 [短信控制台] 添加应用后生成的实际SdkAppId，示例如1400006666
     req.SmsSdkAppId = "1400787878"
@@ -209,7 +211,7 @@ except TencentCloudSDKException as err:
 
 ### 统计短信发送数据
 
-```
+```python
 # -*- coding: utf-8 -*-
 from tencentcloud.common import credential
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
@@ -225,7 +227,7 @@ try:
     # 这里采用的是从环境变量读取的方式，需要在环境变量中先设置这两个值。
     # 你也可以直接在代码中写死密钥对，但是小心不要将代码复制、上传或者分享给他人，
     # 以免泄露密钥对危及你的财产安全。
-    # CAM密匙查询: https://console.cloud.tencent.com/cam/capi
+    # SecretId、SecretKey 查询: https://console.cloud.tencent.com/cam/capi
     cred = credential.Credential("secretId", "secretKey")
     # cred = credential.Credential(
     #     os.environ.get(""),
@@ -248,7 +250,7 @@ try:
     clientProfile.httpProfile = httpProfile
 
     # 实例化要请求产品(以sms为例)的client对象
-    # 第二个参数是地域信息，可以直接填写字符串ap-guangzhou，或者引用预设的常量
+    # 第二个参数是地域信息，可以直接填写字符串ap-guangzhou，支持的地域列表参考 https://cloud.tencent.com/document/api/382/52071#.E5.9C.B0.E5.9F.9F.E5.88.97.E8.A1.A8
     client = sms_client.SmsClient(cred, "ap-guangzhou", clientProfile)
 
     # 实例化一个请求对象，根据调用的接口和实际情况，可以进一步设置请求参数
@@ -262,7 +264,7 @@ try:
     # SDK提供对基本类型的指针引用封装函数
     # 帮助链接：
     # 短信控制台: https://console.cloud.tencent.com/smsv2
-    # sms helper: https://cloud.tencent.com/document/product/382/3773
+    # 腾讯云短信小助手: https://cloud.tencent.com/document/product/382/3773#.E6.8A.80.E6.9C.AF.E4.BA.A4.E6.B5.81
 
     # 短信应用ID: 短信SmsSdkAppId在 [短信控制台] 添加应用后生成的实际SmsSdkAppId，示例如1400006666
     req.SmsSdkAppId = "1400787878"
@@ -289,7 +291,7 @@ except TencentCloudSDKException as err:
 
 ### 申请短信模板
 
-```
+```python
 # -*- coding: utf-8 -*-
 from tencentcloud.common import credential
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
@@ -304,7 +306,7 @@ try:
     # 实例化一个认证对象，入参需要传入腾讯云账户密钥对 secretId 和 secretKey
     # 本示例采用从环境变量读取的方式，需要预先在环境变量中设置这两个值
     # 您也可以直接在代码中写入密钥对，但需谨防泄露，不要将代码复制、上传或者分享给他人
-    # CAM 密钥查询：https://console.cloud.tencent.com/cam/capi
+    # SecretId、SecretKey 查询：https://console.cloud.tencent.com/cam/capi
         
     cred = credential.Credential("secretId", "secretKey")
     # cred = credential.Credential(
@@ -328,7 +330,7 @@ try:
     clientProfile.httpProfile = httpProfile
 
     # 实例化 SMS 的 client 对象
-    # 第二个参数是地域信息，可以直接填写字符串 ap-guangzhou，或者引用预设的常量
+    # 第二个参数是地域信息，可以直接填写字符串ap-guangzhou，支持的地域列表参考 https://cloud.tencent.com/document/api/382/52071#.E5.9C.B0.E5.9F.9F.E5.88.97.E8.A1.A8
     client = sms_client.SmsClient(cred, "ap-guangzhou", clientProfile)
 
     # 实例化一个请求对象，根据调用的接口和实际情况，可以进一步设置请求参数
@@ -342,7 +344,7 @@ try:
     # SDK 提供对基本类型的指针引用封装函数
     # 帮助链接：
     # 短信控制台：https://console.cloud.tencent.com/smsv2
-    # sms helper：https://cloud.tencent.com/document/product/382/3773
+    # 腾讯云短信小助手：https://cloud.tencent.com/document/product/382/3773#.E6.8A.80.E6.9C.AF.E4.BA.A4.E6.B5.81
 
     # 模板名称 
     req.TemplateName = "腾讯云"

@@ -35,9 +35,10 @@ getSignature: function(callback) {
 >?
 >- `url` 是您派发签名服务的 URL，参见 [客户端上传指引](https://cloud.tencent.com/document/product/266/9219)。
 >- `signature` 计算规则可参考 [客户端上传签名](https://cloud.tencent.com/document/product/266/9221)。
+- 子应用、视频文件分类、任务流等信息都包含在上传签名中，更多相关信息请参见 [签名参数说明](https://cloud.tencent.com/document/product/266/9221#.3Ca-id.3D.22p2.22.3E.3C.2Fa.3E.E7.AD.BE.E5.90.8D.E5.8F.82.E6.95.B0.E8.AF.B4.E6.98.8E)。
 
 **3. 上传视频**
-上传视频是通过调用`VodUploader.start`来实现的，选择视频则通过微信小程序 API 中的`wx.chooseVideo`方法实现。示例如下：
+上传视频是通过调用 `VodUploader.start` 来实现的，选择视频则通过微信小程序 API 中的 `wx.chooseVideo` 方法实现。示例如下：
 
 ```js
  const uploader = VodUploader.start({
@@ -89,11 +90,16 @@ getSignature: function(callback) {
 | reportId    | 否    | number     | 填入后，会携带上报至点播后台  |
 | mediaName | 否 | string | 视频名称，推荐填写（如果不填，则默认为“来自小程序”）
 | coverFile | 否 | file | 视频封面，wx.chooseImage 回调返回的文件对象
+| fileParallelLimit    | 否    | number     | 同一个实例下上传的文件并发数，默认值3  |
+| chunkParallelLimit    | 否    | number     | 同一个上传文件的分块并发数，默认值6  |
+| chunkRetryTimes    | 否    | number     | 分块上传时，出错重试次数，默认值2（加第一次，请求共3次）  |
+| chunkSize    | 否    | number     | 分块上传时，每片的字节数大小，默认值8388608（8MB）  |
+| progressInterval    | 否    | number     | 上传进度的回调方法 onProgress 的回调频率，单位 ms ，默认值1000  |
 | [progress](#y1) | 是 | Function | 上传 progress 事件回调，返回上传进度等信息
 | [finish](#y2) | 是 | Function | 上传结束回调，返回 fileId 等信息
 | [error](#y3) | 是 | Function | 错误处理回调
 
-### `progress`回调[](id:y1)
+### progress 回调[](id:y1)
 
 | 字段名 | 类型 | 字段描述 |
 | ------- | ------- | ------- |
@@ -102,7 +108,7 @@ getSignature: function(callback) {
 | speed | number | 上传速度 |
 | total | number | 总大小 |
 
-### `finish`回调[](id:y2)
+### finish 回调[](id:y2)
 
 | 字段名 | 类型 | 字段描述 |
 | ------- | ------- | ------- |
@@ -111,7 +117,7 @@ getSignature: function(callback) {
 | videoName | string | 视频名称 |
 | videoUrl | string | 视频链接 |
 
-### `error`回调[](id:y3)
+### error 回调[](id:y3)
 
 | 字段名 | 类型 | 字段描述 |
 | ------- | ------- | ------- |
@@ -120,6 +126,8 @@ getSignature: function(callback) {
 
 ## 其他说明
 
-1. 由于小程序没有获取真实文件名的 API，所以需要在上传视频时指定视频名称。如不传入`mediaName`，SDK 会设置视频名称为“来自小程序”。
+1. 由于小程序没有获取真实文件名的 API，所以需要在上传视频时指定视频名称。如不传入 `mediaName`，SDK 会设置视频名称为“来自小程序”。
 2. 默认支持断点续传和分片上传。
-3. 小程序域名信息中，`request`和`uploadFile`为合法域名，只需加上`vod2.qcloud.com`即可。
+3. 小程序域名信息中，`request` 和 `uploadFile` 为合法域名，只需加上 `vod2.qcloud.com` 即可。
+4.  小程序端默认判断当前页面的域名是 http: 时，使用 http: 域名上传。若判断域名非 http: 时，则使用 https: 域名上传。 
+5.  uni-app 集成小程序上传 SDK，因平台限制，仅在微信和 QQ 等部分小程序平台支持分片上传，Android 和 iOS 平台 App 建议集成原生上传 SDK，否则可能影响大文件的上传质量。

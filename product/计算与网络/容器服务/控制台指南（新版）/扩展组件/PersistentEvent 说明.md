@@ -1,7 +1,7 @@
-## 简介
+## 简介 
 
 
-<dx-alert infotype="alarm" title="">
+<dx-alert infotype="alarm" title=" ">
 该组件目前已不再维护，若需要使用事件存储能力，请参考 [事件存储](https://cloud.tencent.com/document/product/457/32091) 文档。日志服务 CLS 新版事件存储提供免费服务，并预置可视化 [事件仪表盘](https://cloud.tencent.com/document/product/457/50512)。
 </dx-alert>
 
@@ -20,7 +20,7 @@ Kubernetes Events 包括了 Kubernetes 集群的运行和各类资源的调度�
 | -------------------- | ---------- | --------------- | ------------ |
 | tke-persistent-event | deployment | 0.2核 CPU，100MB内存 | kube-system  |
 
-## 使用场景
+## 使用场景 
 
 Kubernetes 事件是集群内部资源生命周期、资源调度、异常告警等情况产生的记录，可以通过事件深入了解集群内部发生的事情，例如调度程序做出的决策或者分析某些 Pod 从节点中被逐出的原因。
 

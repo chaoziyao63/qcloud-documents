@@ -49,7 +49,7 @@ RTMPS 协议能够很好的解决 RTMP 安全问题。RTMPS 协议是经过 SSL 
 
 ## 注意事项
 
-**使用 SSL 加密的 RTMPS 推流协议，需要推流域名配置证书，目前云直播默认推流域名已经配置了通用证书**。如果想使用自己的证书，必须更换端口。腾讯视频云多协议平台对 RTMPS 协议进行了优化，用户无需更换端口，可直接使用自己的证书，平台会自动根据域名去做适配，匹配到对应的证书。
+**使用 SSL 加密的 RTMPS 推流协议，需要推流域名配置证书，目前云直播默认推流域名 push.tlivecloud.com 已经配置了通用证书。其他默认域名，需要 [提交工单](https://console.cloud.tencent.com/workorder/category) 提供域名，根据对应证书进行配置。** 如果想使用自己的证书，必须更换端口。腾讯视频云多协议平台对 RTMPS 协议进行了优化，用户无需更换端口，可直接使用自己的证书，平台会自动根据域名去做适配，匹配到对应的证书。
 
 > ? 
 - 若您希望测试使用 RTMPS 推流，可以通过云直播默认推流域名进行接入。
@@ -61,7 +61,7 @@ RTMPS 协议能够很好的解决 RTMP 安全问题。RTMPS 协议是经过 SSL 
 
 1. 生成推流地址，可通过以下两种方式进行：
    - 通过拼接规则自主拼接，详细操作请参见 [自主拼装直播 URL](https://cloud.tencent.com/document/product/267/32720#push)。
-   - 进入云直播控制台的【直播工具箱】>[【地址生成器】](https://console.cloud.tencent.com/live/addrgenerator/addrgenerator)，选择生成类型为**推流域名**，并按需填写推流地址信息，详细操作请参见 [地址生成器](https://cloud.tencent.com/document/product/267/35257#push)。
+   - 进入云直播控制台的 **直播工具箱** > [**地址生成器**](https://console.cloud.tencent.com/live/addrgenerator/addrgenerator)，选择生成类型为**推流域名**，并按需填写推流地址信息，详细操作请参见 [地址生成器](https://cloud.tencent.com/document/product/267/35257#push)。
  ![](https://main.qcloudimg.com/raw/343726985cf941fdcdaa4bf03f94f23e.png)
 2. 将生成的 RTMP 推流地址修改成 RTMPS 输入到 OBS 开始 RTMPS 推流，详细操作请参见 [OBS 推流](https://cloud.tencent.com/document/product/267/32726)。
 ![](https://main.qcloudimg.com/raw/5dc970602f53a9f5730649db70ecdc70.png)

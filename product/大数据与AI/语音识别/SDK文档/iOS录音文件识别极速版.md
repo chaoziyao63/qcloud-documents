@@ -1,62 +1,27 @@
 ## 开发准备  
-
 ### SDK 获取
-
-录音文件识别的 iOS SDK 以及 Demo 的下载地址：[QCloud SDK](https://sdk-1300466766.cos.ap-shanghai.myqcloud.com/realtime/QCloudSDK_IOS_v2.6.1.zip)。
+录音文件识别的 iOS SDK 以及 Demo 的下载地址：[接入 SDK 下载](https://console.cloud.tencent.com/asr/download)。
 
 ### 使用须知
-- QCloudSDK 支持 **iOS 9.0** 及以上版本。
-- 录音文件识别，需要手机能够连接网络（GPRS、3G 或 Wi-Fi 网络等）。
-- 运行 Demo 必须设置 AppID、SecretID、SecretKey、ProjectId，可在 [API 密钥管理](https://console.cloud.tencent.com/cam/capi) 中获取。
+- SDK 支持 **iOS 9.0** 及以上版本。
+- 录音文件识别，需要手机能够连接网络（3G、4G 或 Wi-Fi 网络等）。
+- 运行 Demo 必须设置 AppID、SecretID、SecretKey，可在 [API 密钥管理](https://console.cloud.tencent.com/cam/capi) 中获取。
 
 ### SDK 导入
+1. 下载并解压 iOS SDK 压缩包，压缩包中包含 Demo 和 SDK, 其中QCloudFileRecognizer.framework为录音文件识别极速版framework包。
+2. XcodeFile > Add Files to "Your Project"，在弹出 Panel 选中所下载SDK包QCloudFileRecognizer.framework > Add（选中“Copy items if needed”）。
 
-下载并解压 iOS SDK 压缩包，压缩包中包含 Sample Code 和 QCloudSDK。
 
 ### 工程配置
-
-在工程` info.plist` 添加以下设置：
-1. **设置 NSAppTransportSecurity 策略，添加如下内容：**
-```objective-c
-  <key>NSAppTransportSecurity</key>
-  <dict>
-	<key>NSExceptionDomains</key>
-	<dict>
-		<key>qcloud.com</key>
-		<dict>
-			<key>NSExceptionAllowsInsecureHTTPLoads</key>
-			<true/>
-			<key>NSExceptionMinimumTLSVersion</key>
-			<string>TLSv1.2</string>
-			<key>NSIncludesSubdomains</key>
-			<true/>
-			<key>NSRequiresCertificateTransparency</key>
-			<false/>
-		</dict>
-	</dict>
-    </dict>
-```
-2. **申请系统麦克风权限，添加如下内容：**
-```objective-c
-   <key>NSMicrophoneUsageDescription</key>
-   <string>需要使用了的麦克风采集音频</string>
-```
-3. **在工程中添加依赖库，在 build Phases Link Binary With Libraries 中添加以下库：**
-   + AVFoundation.framework
-   + AudioToolbox.framework
-   + QCloudSDK.framework
-   + CoreTelephony.framework
-   + libWXVoiceSpeex.a
-
-添加完如图所示。
-![](https://main.qcloudimg.com/raw/17ff6f4f4a27e0843de528eb070c2f32.png)
+**在工程中添加依赖库，在 build Phases Link Binary With Libraries 中添加以下库：**
+- QCloudFileRecognizer.framework
+- libc++.tbd
+- AVFoundation.framework
+- AudioToolbox.framework
 
 ### 类说明
-
 #### QCloudFlashFileRecognizer 初始化说明
-
-**QCloudFlashFileRecognizer** 是录音文件极速版入口类
-
+**QCloudFlashFileRecognizer** 是录音文件极速版入口类。
 ```objective-c
 /**
   通过 appId secretId secretKey 初始化
@@ -77,10 +42,9 @@
 - (instancetype)initWithAppId:(NSString *)appid secretId:(NSString *)secretId secretKey:(NSString *)secretKey token:(NSString *)token;
 ```
 
-#### QCloudFlashFileRecognizerDelegate 协议说明[](id:QCloudFlashFileRecognizerDelegate)
-
+[](id:QCloudFlashFileRecognizerDelegate)
+#### QCloudFlashFileRecognizerDelegate 协议说明
 此 delegate 为录音文件识别相关回调，调用者需要实现此 delegate 获取识别结果事件。
-
 ```objective-c
 @protocol QCloudFlashFileRecognizerDelegate <NSObject>
 @optional
@@ -102,24 +66,26 @@
  @param resultData 原始数据
  */
 - (void)FlashFileRecognizer:(QCloudFlashFileRecognizer *_Nullable)recognizer error:(nullable NSError *)error resultData:(nullable NSDictionary *)resultData;
+
+/**
+ * 日志输出
+ * @param log 日志
+ */
+- (void)FlashFileRecgnizerLogOutPutWithLog:(NSString *_Nullable)log;
+
 @end
 ```
 
 ## 示例
-
-### 1. 创建 QCloudFlashFileRecognizer 实例 
-
+1. **创建 QCloudFlashFileRecognizer 实例** 
 ```objective-c
   QCloudFlashFileRecognizer *recognizer = [[QCloudFlashFileRecognizer alloc] initWithAppId:appId 
   								        secretId:secretId secretKey:secretKey];
   //设置 delegate，相关回调方法见 QCloudFlashFileRecognizerDelegate 定义
  recognizer.delegate = self;
 ```
-
-### 2. 实现此 [QCloudFlashFileRecognizerDelegate](#QCloudFlashFileRecognizerDelegate) 协议方法
-
-### 3. 调用方式示例
-
+2. **实现此 [QCloudFlashFileRecognizerDelegate](#QCloudFlashFileRecognizerDelegate) 协议方法**
+3. **调用方式示例**
 ```objective-c
  (void)recognizeWithAudioData {
     QCloudFlashFileRecognizeParams *params = [QCloudFlashFileRecognizeParams defaultRequestParams];

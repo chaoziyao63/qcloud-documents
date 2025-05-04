@@ -2,9 +2,13 @@
 
 本文以一个 Java 客户端为例，为您介绍将 CMQ 队列迁移至 TDMQ CMQ 版的操作步骤。
 
-**方案总览**
+**迁移原理**
+<img src="https://main.qcloudimg.com/raw/bd0a7851575796b8c954eeeb6dcf8144.png" width="569">
 
-![](https://main.qcloudimg.com/raw/a6e13ca122d8524b365c83b53ec05c9b.png)
+
+**方案总览**
+<img src="https://main.qcloudimg.com/raw/a6e13ca122d8524b365c83b53ec05c9b.png" width="569">
+
 
 **整体流程**
 <dx-steps>
@@ -17,14 +21,16 @@
 
 ## 前提条件
 
-参考 [SDK 文档](https://cloud.tencent.com/document/product/406/35818)部署好 CMQ 队列的生产端和消费端服务，并且运行正常。以下迁移步骤以 TCP SDK 为例。
+参见 [SDK 文档](https://cloud.tencent.com/document/product/406/35818) 部署好 CMQ 队列的生产端和消费端服务，并且运行正常。以下迁移步骤以 TCP SDK 为例。
+>?基础网络产品已下线，请您先将客户端迁移到 VPC网络环境下再进行迁移工作，详情参考基础 [网络下线通知](https://cloud.tencent.com/document/product/215/63349)。
+
 
 ## 操作步骤
 
 ### 步骤1：迁移元数据
 
 1. 登录 [CMQ 控制台](https://console.cloud.tencent.com/cmq)。
-2. 在左侧导航栏选择**队列**，选择好**地域**后，单击页面上方的**同步到 TDMQ**。
+2. 在左侧导航栏选择**队列**，选择好**地域**后，单击页面上方的**基础数据迁移**。
 3. 在弹出的窗口中单击**启动**，将该地域下的所有队列和主题元数据迁移至 TDMQ CMQ 版中。
    ![](https://main.qcloudimg.com/raw/0d1d65697c56dfa776c6036a52eb3d79.png)
 4. 迁移完成后，登录 [TDMQ 控制台](https://console.cloud.tencent.com/tdmq)。

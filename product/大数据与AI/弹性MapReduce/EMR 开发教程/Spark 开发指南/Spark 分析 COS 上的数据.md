@@ -6,7 +6,7 @@ Spark 是基于内存计算的大数据并行计算框架。Spark 基于内存�
 
 ## 1. 开发准备
 - 因为任务中需要访问腾讯云对象存储（COS），所以需要在 COS 中先 [创建一个存储桶（Bucket）](https://cloud.tencent.com/document/product/436/13309)。
-- 确认您已开通腾讯云，并且创建了一个 EMR 集群。在创建 EMR 集群的时候需要在软件配置界面选择 Spark 组件，并且在【实例信息】>【基础配置】中开启对象存储的授权。
+- 确认您已开通腾讯云，并且创建了一个 EMR 集群。在创建 EMR 集群的时候需要在软件配置界面选择 Spark 组件，并且在**实例信息 > 基础配置**中开启对象存储的授权。
 
 ## 2. 使用 Maven 创建工程
 在本次演示中，不再采用系统自带的演示程序，而是自己建立工程编译打包之后上传到 EMR 集群运行。推荐您使用 Maven 来管理您的工程。Maven 是一个项目管理工具，能够帮助您方便的管理项目的依赖信息，即它可以通过 pom.xml 文件的配置获取 jar 包，而不用去手动添加。
@@ -131,21 +131,20 @@ scp $localfile root@公网IP地址:$remotefolder
 然后进入您存放 jar 包的文件夹下，执行以下指令：
 ```
 [hadoop@10spark]$ spark-submit    --class    $WordCountOnCOS    --master 
-yarn-cluster $packagename.jar cosn:// $bucketname /$testfile cosn:// $bucketname 
-/output
+yarn-cluster $packagename.jar cosn://$bucketname/$testfile cosn://$bucketname/output
 ```
 其中 $WordCountOnCOS 为您的 Java Class 名字，$packagename 为您新建 Maven 工程中生成的 jar 包名字，$bucketname 为您的存储桶名和路径，$testfile 为您要统计的文件名。最后输出的文件在 output 这个文件夹中，**这个文件夹事先不能被创建，不然运行会失败**。
 
 运行成功后，在指定的存储桶和文件夹下可以看到 wordcount 的结果。
 ```
-[hadoop@172 /]$ hadoop fs -ls cosn:// $bucketname /output
+[hadoop@172 /]$ hadoop fs -ls cosn://$bucketname/output
 Found 3 items
--rw-rw-rw- 1 hadoop Hadoop  0 2018-06-28 19:20 cosn:// $bucketname /output/_SUCCESS
--rw-rw-rw- 1 hadoop Hadoop 681 2018-06-28 19:20 cosn:// $bucketname /output/part-00000
--rw-rw-rw- 1 hadoop Hadoop 893 2018-06-28 19:20 cosn:// $bucketname /output/part-00001
+-rw-rw-rw- 1 hadoop Hadoop  0 2018-06-28 19:20 cosn://$bucketname/output/_SUCCESS
+-rw-rw-rw- 1 hadoop Hadoop 681 2018-06-28 19:20 cosn://$bucketname/output/part-00000
+-rw-rw-rw- 1 hadoop Hadoop 893 2018-06-28 19:20 cosn://$bucketname/output/part-00001
 
 [hadoop@172 demo]$ hadoop fs -cat cosn://$bucketname/output/part-00000
-18/07/05 17:35:01 INFO cosnative.NativeCosFileSystem: Opening 'cosn:// $bucketname/output/part-00000' for reading
+18/07/05 17:35:01 INFO cosnative.NativeCosFileSystem: Opening 'cosn://$bucketname/output/part-00000' for reading
 (under,1)
 (this,3)
 (distribution,2)

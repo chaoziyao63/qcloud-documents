@@ -12,11 +12,12 @@
 2. 在实例列表中单击您的 CVM ID，在详细信息页面，选择**弹性网卡**。
 ![](https://main.qcloudimg.com/raw/1e9965343cd6e71b2b48a6f27e01f5b6.png)
 3. 在“弹性网卡”页面，单击主网卡右侧的**分配内网 IP**。
-4. 在弹出的“分配内网IP”窗口中，选择自动分配或手动填写要分配的内网 IP ，若需分配多个内网 IP，请单击**新增**并填写要分配的内网 IP，完成后单击**确定**。
+4. 在弹出的“分配内网 IP”窗口中，选择自动分配或手动填写要分配的内网 IP ，若需分配多个内网 IP，请单击**新增**并填写要分配的内网 IP，完成后单击**确定**。
 >?若选择手动填写要分配的内网 IP，请确认填写的内网 IP 在所属子网网段内，且不属于系统保留 IP。
 >例如，所属子网网段为：`10.0.0.0/24`，则可填的内网 IP 范围 为：`10.0.0.2 - 10.0.0.254`，本次操作以手动填写 `10.0.0.3` 为例。
 >
-![](https://main.qcloudimg.com/raw/230608e14e90b0b4848661eb337e4d0c.png)
+![](https://qcloudimg.tencent-cloud.cn/raw/33a3ee70ea03fae9b6ddccb0b9b5327c.png)
+
 
 ### 步骤二：绑定 EIP[](id:bindEIP)
 1. 在“弹性网卡”页面，单击 <img src="https://main.qcloudimg.com/raw/57a0c76b72cd97bd80bf857cd30c867a.png" style="margin: 0;">，以展开主网卡信息。
@@ -25,9 +26,10 @@
 3. 在弹出的“绑定弹性公网IP”窗口中：
  - 若有可选的 EIP，选中并单击**确定**即可。
  - 若无可选的 EIP，可单击弹框上方的**新建**进行申请，详情请参见 [申请 EIP](https://cloud.tencent.com/document/product/1199/41698)，申请成功后返回弹出框并单击**刷新**，即可看见申请的 EIP，选中并单击**确定**即可。
-![](https://main.qcloudimg.com/raw/ac5172d56f2dc436a5b0c16d1be5ece1.png)
+![](https://qcloudimg.tencent-cloud.cn/raw/6b742de292a1d10ecb7e14a7a8d0938f.png)
 4. 在主网卡的列表中，即可查看相关内网 IP 绑定公网 IP 的信息。
-![](https://main.qcloudimg.com/raw/4898e542a669a4591fcde007fc554aee.png)
+![](https://qcloudimg.tencent-cloud.cn/raw/f1fef47ab8957e36cb911995433d6eb0.png)
+
 
 ### 步骤三：配置网卡
 请根据您的云服务器操作系统类型，选择对应的配置网卡操作：
@@ -60,7 +62,8 @@ cp /etc/sysconfig/network-scripts/ifcfg-eth0{,.bak}
 ```
 vim /etc/sysconfig/network-scripts/ifcfg-eth0
 ```
-8. 按 **i** 切换至编辑模式，把配置文件内容修改为：
+8. 配置文件修改：
+  - CentOS 7系列机型，按 i 切换至编辑模式，把配置文件内容修改为：
 ```
 # Created by cloud-init on instance boot automatically, do not edit.
 #
@@ -96,16 +99,56 @@ USERCTL=no
 ```
  修改后，示例如下：
 ![](https://main.qcloudimg.com/raw/bbc5a78eab53c430eb3e0edcc04287aa.png)
+  - CentOS 8及以上系列机型，按 i 切换至编辑模式，把配置文件内容修改为：
+```
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=dhcp
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+NAME=eth0
+DEVICE=eth0
+ONBOOT=yes
+# 配置主ip
+IPADDR0=10.0.0.10 # 步骤一：绑定 EIP 中查看到的主IP，请根据实际填写
+NETMASK0=255.255.255.0 # 步骤3中所记录的子网掩码，请根据实际填写
+# 配置辅助ip1
+IPADDR1=10.0.0.11 # 步骤一：绑定 EIP 中手动填写的辅助IP，请根据实际填写
+NETMASK1=255.255.255.0
+# 如果您有多个辅助ip，请继续配置辅助ip2，辅助ip3...
+#IPADDR2=10.0.0.12
+#NETMASK2=255.255.255.0
+#IPADDR3=10.0.0.13
+#NETMASK3=255.255.255.0
+#......
+# 配置网关
+GATEWAY=10.0.0.1 # 步骤3中所记录的网关，请根据实际填写
+```
 9. 完成修改后，按 **Esc**，输入 **:wq!** 并回车，保存配置并返回。
-10. 执行如下命令，重启网络服务。
+10. 重启网络服务。
+  - CentOS 7系列机型，执行如下命令，重启网络服务：
 ```
 systemctl restart network.service
+```
+  - CentOS 8及以上系列机型，执行如下命令，重启网卡：
+```
+#重新加载配置
+nmcli connection reload
+#重启网卡
+nmcli connection down eth0 && nmcli connection up eth0  
+#重新连接网卡eth0
+nmcli device reapply eth0
 ```
 11. 执行如下命令，查看 IP。
 ```
 ip address 
 ```
- ![](https://main.qcloudimg.com/raw/40664f8d1eeae7d3ce3ae94a8e602310.png)
+![](https://qcloudimg.tencent-cloud.cn/raw/31f491f2b18f19fc83b285f3135df4db.png)
 
 
 
@@ -154,10 +197,10 @@ ipconfig /all
 <td>上述 <a href="#step2">步骤2</a> 中的备用 DNS 服务器。如果未列出备用 DNS 服务器，则无需填写此参数。</td>
 </tr>
 </tbody></table>
-<img src="https://main.qcloudimg.com/raw/b18a69d6b39f097af3d52e498d0dcfb7.png" />
+<img src="https://main.qcloudimg.com/raw/b18a69d6b39f097af3d52e498d0dcfb7.png" /> 
 7. 单击**高级**，配置辅助内网 IP。
-8. 在“高级 TCP/IP 设置”弹窗中的 “IP 地址”模块下，单击**添加**。
-9. 在 “TCP/IP 地址”弹窗中，填写 [步骤二：绑定 EIP](#bindEIP) 配置的辅助内网 IP，上述 [步骤2](#step2) 中的子网掩码，单击**添加**。若有多个辅助 IP，请重复上一步与当前步骤。
+8. 在**高级 TCP/IP 设置**弹窗中的 “IP 地址”模块下，单击**添加**。
+9. 在 **TCP/IP 地址**弹窗中，填写 [步骤二：绑定 EIP](#bindEIP) 配置的辅助内网 IP，上述 [步骤2](#step2) 中的子网掩码，单击**添加**。若有多个辅助 IP，请重复上一步与当前步骤。
 ![](https://main.qcloudimg.com/raw/8bcb61eff44159b253eee726017e9744.png)
 10. 在 “Internet 协议版本4（TCP/IPv4）属性”弹窗中，单击**确定**。
 11. 在“以太网属性”弹窗中，单击**确定**即可完成配置。

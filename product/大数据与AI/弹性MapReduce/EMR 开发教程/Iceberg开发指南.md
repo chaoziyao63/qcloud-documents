@@ -10,7 +10,7 @@ Apache Iceberg 具备以下能力：
 
 在可靠性与性能方面，Iceberg 可在生产中应用到数十 PB 的数据表，即使没有分布式 SQL 引擎，也可以读取这些巨大规模的表：
 - 扫描速度快，无需使用分布式 SQL 引擎即可读取表或查找文件。
-- 高级过滤，基于表元数据，使用分区和列级统计信息对数据文件以进行裁剪。
+- 高级过滤，基于表元数据，使用分区和列级统计信息对数据文件进行裁剪。
 
 Iceberg 被设计用来解决最终一致的云对象存储中的正确性问题：
 - 可与任何云存储一起使用，并且通过避免调用 list 和 rename 来减少 HDFS 的 NameNode 拥塞。
@@ -19,19 +19,19 @@ Iceberg 被设计用来解决最终一致的云对象存储中的正确性问题
 
 Iceberg 设计为以快照（Snapshot）的形式来管理表的各个历史版本数据。快照代表一张表在某个时刻的状态。每个快照中会列出表在某个时刻的所有数据文件列表。Data 文件存储在不同的 Manifest 文件中，Manifest 文件存储在一个 Manifest List 文件中，Manifest 文件可以在不同的 Manifest List 文件间共享，一个 Manifest List 文件代表一个快照。
 - Manifest list 文件是元数据文件，其中存储的是 Manifest 文件的列表，每个 Manifest 文件占据一行。
--	Manifest 文件是元数据文件，其中列出了组成某个快照的数据文件列表。每行都是每个数据文件的详细描述，包括数据文件的状态、文件路径、分区信息、列级别的统计信息（例如每列的最大最小值、空值数等）、文件的大小以及文件中数据的行数等信息。
+-   Manifest 文件是元数据文件，其中列出了组成某个快照的数据文件列表。每行都是每个数据文件的详细描述，包括数据文件的状态、文件路径、分区信息、列级别的统计信息（例如每列的最大最小值、空值数等）、文件的大小以及文件中数据的行数等信息。
 - Data 文件是 Iceberg 表真实存储数据的文件，一般是在表的数据存储目录的 data 目录下。
 
 ## 使用示例
 更多示例可参考 [Iceberg 官网示例](https://iceberg.apache.org/getting-started)。
+本文以 EMR- V3.3.0中的 Iceberg0.11.0版本为示例，不同EMR版本相关jar包名称可能有所差异，请您根据路径下实际名称取用。
 1. 登录 master 节点，切换为 hadoop 用户。
 2. Iceberg 相关的包放置在 `/usr/local/service/iceberg/` 下面。
 3. 使用计算引擎查询数据。
  - Spark 引擎
     - Spark-SQL 交互式命令行
 ```
-spark-sql --master local[*] --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions--conf spark.sql.catalog.local=org.apache.iceberg.spark.SparkCatalog--conf spark.sql.catalog.local.type=hadoop --conf spark.sql.catalog.local.warehouse=/usr/hive/warehouse --jars /usr/local/service/iceberg/iceberg-spark3-runtime-0.11.0.jar
-
+spark-sql --master local[*] --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions --conf spark.sql.catalog.local=org.apache.iceberg.spark.SparkCatalog --conf spark.sql.catalog.local.type=hadoop --conf spark.sql.catalog.local.warehouse=/usr/hive/warehouse --jars /usr/local/service/iceberg/iceberg-spark3-runtime-0.11.0.jar
 ```
     - 插入和查询数据
 ```
@@ -46,12 +46,13 @@ beeline -u jdbc:hive2://[hiveserver2_ip:hiveserver2_port] -n hadoop --hiveconf h
 ```
     - 查询数据
 ```
-ADD JAR /usr/local/service/hive/lib/iceberg-hive-runtime-0.11.0.jar;
-CREATE EXTERNAL TABLE t1 STORED BY 'org.apache.iceberg.mr.hive.HiveIcebergStorageHandler' LOCATION '/usr/hive/warehouse/default/t1';
+ADD JAR /usr/local/service/iceberg/iceberg-hive-runtime-0.11.0.jar;
+CREATE EXTERNAL TABLE t1 STORED BY 'org.apache.iceberg.mr.hive.HiveIcebergStorageHandler' LOCATION '/usr/hive/warehouse/default/t1' TBLPROPERTIES ('iceberg.catalog'='location_based_table');
+
 select count(*) from t1;
 ```
  - Flink 引擎
-    - 启动一个 Flink standalone 集群和 Flink 交互式
+    - 根据 Flink 和 Hive 版本在 [Maven 仓库](https://repo1.maven.org/maven2/org/apache/flink/) 下载相应版本 flink-sql-connector-hive 包，以 Flink standalone 模式为例，并使用 Flink shell 交互式命令行。
 ```
 wget https://repo1.maven.org/maven2/org/apache/flink/flink-sql-connector-hive-3.1.2_2.11/1.12.1/flink-sql-connector-hive-3.1.2_2.11-1.12.1.jar
 /usr/local/service/flink/bin/start-cluster.sh
@@ -59,7 +60,7 @@ sql-client.sh embedded -j /usr/local/service/iceberg/iceberg-flink-runtime-0.11.
 ```
     - 查询数据
 ```
-CREATE CATALOG hive_catalog WITH ('type'='iceberg','catalog-type'='hive','uri'='thrift://hiveserver2_ip:hiveserver2_port','clients'='5','property-version'='1','warehouse'='hdfs:///usr/hive/warehouse/');
+CREATE CATALOG hive_catalog WITH ('type'='iceberg','catalog-type'='hive','uri'='hivemetastore_ip:hivemetastore_port','clients'='5','property-version'='1','warehouse'='hdfs:///usr/hive/warehouse/');
 CREATE DATABASE hive_catalog.iceberg_db;
 CREATE TABLE hive_catalog.iceberg_db.t1 (id BIGINT COMMENT 'unique id',data STRING);
 INSERT INTO hive_catalog.iceberg_db.t1 values(1, 'tom');

@@ -1,74 +1,41 @@
 ## 介绍
-Hbase Connector 提供了对 Hbase 集群的读写支持。Oceanus 已经提供了内置的`flink-connector-hbase` Connector 组件。
+HBase Connector 提供了对 HBase 集群的读写支持。Oceanus 已经提供了内置的`flink-connector-hbase` Connector 组件，具体使用可参考 [使用 MySQL 关联 HBase 维表数据到 ClickHouse](https://cloud.tencent.com/document/product/849/60521) 进一步了解。
+
+## 版本说明
+
+| Flink 版本 | 说明                            |
+| :-------- | :------------------------------ |
+| 1.11      | 支持 hbase 版本为：1.4.x                |
+| 1.13      | 支持 hbase 版本为：1.4.x、2.2.x、2.3.x |
+| 1.14      | 支持 hbase 版本为：1.4.x、2.2.x |
 
 ## 使用范围
-仅适用于 hbase-1.4.x。
 
-## 示例
-### 用作数据源（Source）
+可以作为源表，维表，以及Tuple、Upsert 数据流的目的表。
 
-```
-CREATE TABLE dim_hbase (
-  rowkey STRING,
+## DDL 定义
+
+```sql
+CREATE TABLE hbase_table (
+  rowkey INT,
   cf ROW < school_name STRING >,
   PRIMARY KEY (rowkey) NOT ENFORCED
 ) WITH (
-  'connector' = 'hbase-1.4',                       -- 固定值为 hbase-1.4
-  'table-name' = 'dim_hbase',                      -- Hbase 表名
-  'zookeeper.quorum' = 'ip:port,ip:port,ip:port'  -- Hbase 的 zookeeper 地址
+  'connector' = 'hbase-1.4',                          -- Flink 1.13 支持 hbase-2.2
+  'table-name' = 'hbase_sink_table',                         -- Hbase 表名
+  'zookeeper.quorum' = 'ip:port,ip:port,ip:port'   -- Hbase 的 zookeeper 地址
 );
-
--- Logger Sink 可以将输出数据打印到 TaskManager 的日志中
--- 程序包下载地址：https://github.com/tencentyun/flink-hello-world/releases
--- 需要先在【程序包管理】中上传该程序包，然后在【作业参数】中引用它
-CREATE TABLE CustomSink ( 
-  rowkey STRING, 
-  school_name STRING 
-) WITH ( 
-  'connector' = 'logger',
-  'print-identifier' = 'DebugData'
-);
-
-INSERT INTO  CustomSink SELECT dim_hbase.rowkey, dim_hbase.cf.school_name as school_name FROM dim_hbase;
-```
-
-### 用作数据目的（Sink）
-
-```
-CREATE TABLE random_source ( 
-  rowkey STRING, 
-  school_name STRING 
-  ) WITH ( 
-  'connector' = 'datagen', 
-  'rows-per-second'='1',            -- 每秒产生的数据条数
-  'fields.rowkey.length'='10',      -- 随机字符串的长度
-  'fields.school_name.length'='10'  -- 随机字符串的长度
-);
-
-CREATE TABLE dim_hbase (
-  rowkey STRING,
-  cf ROW < school_name STRING >,
-  PRIMARY KEY (rowkey) NOT ENFORCED
-) WITH (
-  'connector' = 'hbase-1.4',                          -- 固定值为 hbase-1.4
-  'table-name' = 'dim_hbase',                         -- Hbase 表名
-  'zookeeper.quorum' = 'ip:port,ip:port,ip:port',     -- Hbase 的 zookeeper 地址
-  'sink.buffer-flush.max-size' = '50KB',              -- 写入 Hbase 前，内存中缓存的数据条数。调大该值有利于提高 Hbase 写入性能，但会增加写入延迟和内存使用。
-  'sink.buffer-flush.max-rows' = '10'                 -- 将缓存数据周期性写入到 Hbase 的间隔，可以控制写入 Hbase 的延迟。
-);
-
-INSERT INTO dim_hbase SELECT rowkey, ROW(school_name) FROM random_source;
 ```
 
 ## WITH 参数
 
-| 参数                       | 说明                                                         | 是否必填 | 备注                                                         |
-| :------------------------- | :------------------------------------------------ | :------- | :----------------------------------------------------------- |
-| connector                  | 表类型                                                       | 是       | 固定值为 `hbase-1.4`                   |
-| table-name                 | HBase 表名                                                    | 是       | -                                                            |
-| zookeeper.quorum           | HBase 的 zookeeper 地址                                         | 是       | -                                     |
-| zookeeper.znode.parent     | HBase 在 zookeeper 中的根目录                                   | 否       | -                                    |
-| null-string-literal        | HBase 字段类型为字符串时，如果 Flink 字段数据为 null，则将该字段赋值为 null-string-literal，并写入 Hbase | 否       | 默认为 null                                                   |
+| 参数                       | 说明                                | 是否必填 | 备注                                                         |
+| :------------------------- | :----------------------------- | :------- | :----------------------------------------------------------- |
+| connector                  | 表类型                                   | 是       | `hbase-1.4` 或者 `hbase-2.2`<br>如果您用了 hbase 2.3.x 版本，那么，connector 参数值需要替换为 hbase-2.2 |
+| table-name                 | HBase 表名                                                   | 是       | -                                  |
+| zookeeper.quorum           | HBase 的 zookeeper 地址                                      | 是       | -                                     |
+| zookeeper.znode.parent     | HBase 在 zookeeper 中的根目录                                | 否       | -                                |
+| null-string-literal        | HBase 字段类型为字符串时，如果 Flink 字段数据为 null，则将该字段赋值为 null-string-literal，并写入 HBase | 否       | 默认为 null                |
 | sink.buffer-flush.max-size | 写入 HBase 前，内存中缓存的数据量（字节）大小。调大该值有利于提高 HBase 写入性能，但会增加写入延迟和内存使用。**仅作为 Sink 时使用** | 否       | 默认值为2MB，支持字节单位 B、KB、MB 和 GB，不区分大小写。设置为0表示不进行缓存 |
 | sink.buffer-flush.max-rows | 写入 HBase 前，内存中缓存的数据条数。调大该值有利于提高 HBase 写入性能，但会增加写入延迟和内存使用。**仅作为 Sink 时使用** | 否       | 默认值为1000，设置为0表示不进行缓存                          |
 | sink.buffer-flush.interval | 将缓存数据周期性写入到 HBase 的间隔，可以控制写入 HBase 的延迟。**仅作为 Sink 时使用**。 | 否       | 默认值为1秒，支持时间单位 ms、s、min、h 和 d。设置为0表示关闭定期写入 |
@@ -78,8 +45,8 @@ HBase 将所有的数据存为字节数组。读写操作时需要将数据进�
 
 <table>
   <tr>
-    <th><b>Flink SQL 类型</th>
-    <th><b>Hbase 转换</th>
+    <th><b>Flink 字段类型</th>
+    <th><b>HBase 转换</th>
   </tr>
   <tr>
     <td>CHAR / VARCHAR / STRING</td>
@@ -147,5 +114,39 @@ HBase 将所有的数据存为字节数组。读写操作时需要将数据进�
   </tr>
 </table>
 
+## 代码示例
+包含 HBase 维表的实时计算作业代码，示例如下：
+```sql
+CREATE TABLE datagen_source_table (
+  id INT,
+  name STRING,
+  `proc_time` AS PROCTIME()
+) with (
+  'connector'='datagen',
+  'rows-per-second'='1'
+);
+
+CREATE TABLE hbase_table (
+  rowkey INT,
+  cf ROW < school_name STRING >,
+  PRIMARY KEY (rowkey) NOT ENFORCED
+) WITH (
+  'connector' = 'hbase-1.4',                          -- Flink 1.13 支持 hbase-2.2
+  'table-name' = 'hbase_sink_table',                         -- Hbase 表名
+  'zookeeper.quorum' = 'ip:port,ip:port,ip:port'   -- Hbase 的 zookeeper 地址
+);
+
+CREATE TABLE blackhole_sink(
+  id INT,
+  name STRING
+) with (
+  'connector' = 'blackhole' 
+);
+  
+INSERT INTO blackhole_sink
+     SELECT id, cf.school_name as name FROM datagen_source_table src
+JOIN hbase_table FOR SYSTEM_TIME AS OF src.`proc_time` as h ON src.id = h.rowkey;
+```
+
 ## 注意事项
-Hbase connector 一般会使用 DDL 语句中定义的主键，以 upsert 模式工作，与外部系统交换变更日志信息。因此，必须在 HBase 的 rowkey 字段上定义主键（必须声明 rowkey 字段）。如果未声明 PRIMARY KEY 子句，则 HBase 连接器默认将 rowkey 作为主键。
+HBase Connector 一般会使用 DDL 语句中定义的主键，以 `upsert` 模式工作，与外部系统交换变更日志信息。因此，必须在 HBase 的 rowkey 字段上定义主键（必须声明 rowkey 字段）。如果未声明 PRIMARY KEY 子句，则 HBase 连接器默认将 rowkey 作为主键。

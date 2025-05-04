@@ -15,10 +15,10 @@ CFS 成本低廉，采用按量计费模式，以小时为计费周期，您只�
 请参考以下步骤为账号进行授权操作：
 1. 请参考 [修改角色](https://cloud.tencent.com/document/product/598/19389)，为 `SCF_QcsRole` 角色关联 `QcloudCFSReadOnlyAccess` 策略。关联成功则如下图所示：
 如您使用的账号未进行该操作，则可能出现函数无法保存，CFS 相关功能无法使用等问题。
-![](https://main.qcloudimg.com/raw/dec5c3f4d54aeeb25fce8450f584afa4.png)
+![](https://qcloudimg.tencent-cloud.cn/raw/2b7f4fb215c084ddcd099bd6f19ac8a7.png)
 2. 如您使用账号为子账号，则请联系主账号并参考 [子用户权限设置](https://cloud.tencent.com/document/product/598/36256) 为您的子账号关联 `QcloudCFSReadOnlyAccess` 策略。关联成功则如下图所示：
 如您使用的子账号未进行该操作，则可能出现无法使用 CFS 相关功能的问题。
-![](https://main.qcloudimg.com/raw/4e83ee59c61f86484b3f56b356ac32d5.png)
+![](https://qcloudimg.tencent-cloud.cn/raw/72759c6e44b9c2e615cdcc24c6960b52.png)
 
 
 
@@ -34,11 +34,11 @@ CFS 成本低廉，采用按量计费模式，以小时为计费周期，您只�
 1. 登录云函数控制台，选择左侧导航栏中的 **[函数服务](https://console.cloud.tencent.com/scf/list)**。
 2. 在“函数服务”页面，选择需配置的函数名。
 3. 在“函数管理”页面的**函数配置**页签中，单击右上角的**编辑**。
-4. 在“私有网络”中，勾选启用并选择 CFS 文件系统所在的 VPC。如下图所示：
+4. 在“私有网络”中，勾选启用并选择 CFS 文件系统所在的 VPC。如下图所示： 
 ![](https://main.qcloudimg.com/raw/b2e88b9fcb5e5045cc9951d75f498eca.png)
-5. 在“文件系统”中勾选启用，并按照以下信息进行挂载。如下图所示：
+5. 在“文件系统”中勾选启用，并按照以下信息进行挂载。如下图所示： 
 ![](https://main.qcloudimg.com/raw/5df4693e17f05892edb610e04f420de2.png)
- - **用户ID**及**用户组ID**：这两个值等同于 CFS 文件系统中的用户及用户组。云函数默认用户及用户组值为 10000，来操作您的 CFS 文件系统。请按需设置文件的拥有者及相应组的权限，并确保您的 CFS 文件系统已配置相应权限。详情请参见 [权限设置](https://cloud.tencent.com/document/product/582/10951)。
+ - **用户ID**及**用户组ID**：这两个值等同于 CFS 文件系统中的用户及用户组。云函数默认用户及用户组值为 10000，来操作您的 CFS 文件系统。请按需设置文件的拥有者及相应组的权限，并确保您的 CFS 文件系统已配置相应权限。一个简单的例子是执行如下命令：`chown 10000:10000 -R /mnt/folder`。详情请参见 [权限设置](https://cloud.tencent.com/document/product/582/10951)。
  - **远程目录**：为云函数需访问 CFS 文件系统的远端目录，由文件系统和远端目录两部分组成。
  -  **本地目录**：为本地文件系统的挂载点。您可使用 `/mnt/` 目录的子目录挂载 CFS 文件系统。
  -  **文件系统ID**：在下拉列表中选择需挂载的文件系统。
@@ -47,7 +47,7 @@ CFS 成本低廉，采用按量计费模式，以小时为计费周期，您只�
 您可执行以下函数代码，开始使用 CFS 文件系统。
 ```
 'use strict';
-var fs = requiret('fs');
+var fs = require('fs');
 exports.main_handler = async (event, context) => {
       await fs.promises.writeFile('/mnt/myfolder/filel.txt', JSON.stringify(event)); 
       return event;
@@ -56,4 +56,3 @@ exports.main_handler = async (event, context) => {
 
 ### SCF 使用 CFS 文件系统性能测试
 您可以使用此 [脚本](https://github.com/tencentyun/scf_cfs_demo) 测试 SCF 使用 CFS 时的性能。
-

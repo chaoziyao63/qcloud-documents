@@ -1,5 +1,5 @@
 
-## 简介
+## 简介 
 
 ### 组件介绍
 
@@ -18,7 +18,7 @@ GPU Manager 提供一个 All-in-One 的 GPU 管理器，基于 Kubernetes Device
 | gpu-manager-daemonset | DaemonSet  | 每节点1核 CPU, 1Gi内存     | kube-system  |
 | gpu-quota-admission   | Deployment | 每节点1核 CPU, 1Gi内存      | kube-system  |
 
-## 使用场景
+## 使用场景 
 
 在 Kubernetes 集群中运行 GPU 应用时，可以解决 AI 训练等场景中申请独立卡造成资源浪费的情况，让计算资源得到充分利用。
 
